@@ -859,7 +859,7 @@ function hideOverlay() { ov.classList.add('hide'); ov.innerHTML = ''; }
 
 function showStart() {
   state = 'menu';
-  const name = esc(CONFIG.herName || store.name || 'maskinsnedker');
+  const name = 'maskinsnedker'; // startskærmen hilser altid "Hej maskinsnedker!"
   const back = store.attempts > 0;
   const touch = !!(window.matchMedia && matchMedia('(pointer: coarse)').matches);
   const rows = Object.entries(TYPES).filter(([, T]) => !T.bad).map(([k, T]) =>
