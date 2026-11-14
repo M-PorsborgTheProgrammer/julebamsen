@@ -95,7 +95,7 @@ const CONFIG = {
   fromName: "",      // dit navn – står på svendebrevet (tomt = "afsenderen")
   redeem: "d. 15. november", // hvornår bamsen indløses (tomt = ingen dato)
   message: "",       // valgfri hilsen på svendebrevet, fx "Bamsen udleveres personligt – du bestemmer hvornår."
-  target: 2000,     // point i ét forsøg for at vinde julebamsen
+  target: 2500,     // point i ét forsøg for at vinde julebamsen
   lives: 3,         // liv pr. forsøg – et søm i kassen eller en tabt ting koster ét
 };
 // Hvert forsøg starter forfra på 0 point. Efter et mislykket forsøg bliver spillet usynligt lidt lettere
@@ -677,10 +677,11 @@ let fx = [], texts = [], confettiT = 0, confettiAcc = 0;
 // falder s – mere, jo længere hun var fra målet. Antal liv og mål er uændret, så hun mærker kun, at hun "er blevet bedre".
 function difficulty(s) {
   return {
-    iv0: lerp(1.1, .9, s), iv1: lerp(.9, .4, s),   // sekunder mellem nye ting: i starten → tæt på målet
-    v0: lerp(120, 140, s), v1: lerp(170, 320, s),  // faldhastighed: i starten → tæt på målet
+    iv0: lerp(1.1, .9, s), iv1: lerp(.9, .32, s),  // sekunder mellem nye ting: i starten → tæt på målet
+    v0: lerp(120, 140, s), v1: lerp(170, 380, s),  // faldhastighed: i starten → tæt på målet
     reach: lerp(220, 700, s),                      // hvor langt fra hinanden to ting, der lander samtidig, må være
-    nail: lerp(.4, 1, s),                          // hvor mange søm
+    nail: lerp(.4, 1.4, s),                        // hvor mange søm
+    mester: lerp(.45, 1, s),                       // hvor ofte mester kommer og kaster søm (og hvor mange)
     half: lerp(62, 53, s), late: lerp(44, 24, s),  // hvor tilgivende kassen er over for gode ting
   };
 }
@@ -692,7 +693,7 @@ function newRound() {
   store.attempts++; save();
   g = { t: 0, score: 0, hearts: CONFIG.lives, items: [], pile: [], spawnT: .8, shake: 0, hurt: 0, lostAt: -9,
         caught: 0, streak: 0, bestStreak: 0, attempt: store.attempts, fun: store.won, D: difficulty(store.skill),
-        lastCause: '', half: false, near: false, recordShown: false, record: false, reason: '' };
+        lastCause: '', half: false, near: false, recordShown: false, record: false, reason: '', mester: null, mesterT: 2 };
   player.x = player.tx = W / 2;
   keys.l = keys.r = false;
   confettiT = 0;
@@ -704,8 +705,8 @@ function newRound() {
 }
 // "Fair" placering: to gode ting, der lander tæt på samme tid, skal begge kunne nås,
 // og et søm må aldrig lande oven i en god ting. Så er hver tabt ting spillerens egen skyld.
-function fairX(bad, vy) {
-  const arrive = (CATCH_Y + 40) / vy; // sekunder til den nye ting når kassen
+function fairX(bad, vy, y0 = -40, delay = 0) {
+  const arrive = delay + (CATCH_Y - y0) / vy; // sekunder til den nye ting når kassen
   for (let tries = 0; tries < 12; tries++) {
     const x = rand(30, W - 30);
     let ok = true;
@@ -734,6 +735,43 @@ function spawn(q) {
     vr: T.bad ? 0 : key === 'plank' ? rand(-1.6, 1.6) : rand(-.7, .7) });
   return true;
 }
+// =============== MESTER ===============
+// En vred mester kigger ind fra siden, råber "Dumme lærlinge!" og kaster søm ind på banen. Han kommer først,
+// når hun er lidt i gang, og oftere jo tættere hun er på målet. Først ser og hører hun ham – så kaster han.
+const easeOut = k => 1 - (1 - k) * (1 - k);
+function startMester() {
+  g.mester = { side: Math.random() < .5 ? 1 : -1, t: 0, thrown: false, y: Math.round(CATCH_Y * .64) };
+  beep(98, .3, 'sawtooth', .06, .8); beep(82, .35, 'sawtooth', .05, .8, .14); // grr
+}
+function mesterX(m) {
+  const k = m.t < .45 ? easeOut(m.t / .45) : m.t > 1.65 ? 1 - easeOut(Math.min(1, (m.t - 1.65) / .45)) : 1;
+  const x = lerp(-60, 34, k);
+  return m.side === 1 ? x : W - x;
+}
+function updateMester(dt, q) {
+  const m = g.mester;
+  m.t += dt;
+  if (!m.thrown && m.t >= .8) { m.thrown = true; throwNails(m, q); }
+  if (m.t >= 2.1) { g.mester = null; g.mesterT = lerp(16, 9, q) / g.D.mester; }
+}
+function throwNails(m, q) {
+  const n = g.D.mester > .8 ? 3 : g.D.mester > .6 ? 2 : 1;
+  const sx = mesterX(m) + m.side * 22, sy = m.y - 60, chosen = [];
+  for (let i = 0; i < n; i++) {
+    const vy = lerp(g.D.v0, g.D.v1, q) * rand(.85, 1.15) * FALL, ty = rand(120, 200) * FALL;
+    let tx = null;
+    for (let tries = 0; tries < 6 && tx === null; tries++) { // fair landingssted, og sømmene spredt ud
+      const x = fairX(true, vy, ty, .55);
+      if (x !== null && chosen.every(o => Math.abs(o - x) > 70)) tx = x;
+    }
+    if (tx === null) continue;
+    chosen.push(tx);
+    g.items.push({ type: 'nail', x: sx, y: sy, vy, rot: 0, vr: 0,
+      thrown: { t: -i * .08, dur: .55, sx, sy, cx: (sx + tx) / 2, cy: Math.min(sy, ty) - 110, tx, ty } });
+  }
+  beep(520, .16, 'triangle', .05, .45); // svusj
+}
+
 function burst(x, y, n, colors, spd, size) {
   for (let i = 0; i < n; i++) fx.push({ x, y, vx: rand(-1, 1) * spd, vy: -rand(.3, 1) * spd, life: 0, max: rand(.4, .9),
     color: pick(colors), size: size * rand(.6, 1.4), grav: 500 });
@@ -1023,6 +1061,8 @@ function stepGame(dt) {
   const q = progress();
   g.spawnT -= dt;
   if (g.spawnT <= 0) g.spawnT = spawn(q) ? lerp(g.D.iv0, g.D.iv1, q) * rand(.75, 1.25) : .12;
+  if (g.mester) updateMester(dt, q);
+  else if (q >= .15 && (g.mesterT -= dt) <= 0) startMester();
 
   const kd = (keys.r ? 1 : 0) - (keys.l ? 1 : 0);
   if (kd) { player.x += kd * 560 * dt; player.tx = player.x; }
@@ -1030,6 +1070,15 @@ function stepGame(dt) {
   player.x = clamp(player.x, CRATE_W / 2, W - CRATE_W / 2);
 
   for (const it of g.items) {
+    if (it.thrown) { // søm i luften fra mesters hånd – lander i en bue og falder så som normalt
+      const th = it.thrown; th.t += dt;
+      const k = clamp(th.t / th.dur, 0, 1), u = 1 - k;
+      it.x = u * u * th.sx + 2 * u * k * th.cx + k * k * th.tx;
+      it.y = u * u * th.sy + 2 * u * k * th.cy + k * k * th.ty;
+      it.rot += 14 * dt;
+      if (k >= 1) { it.thrown = null; it.rot = 0; }
+      continue;
+    }
     it.y += it.vy * dt; it.rot += it.vr * dt;
     if (!it.passed && !it.dead && it.y >= CATCH_Y) {
       const T = TYPES[it.type], dx = Math.abs(it.x - player.x);
@@ -1070,11 +1119,13 @@ function render() {
   const playing = state === 'play' || state === 'pause';
   ctx.save();
   if (g && g.shake > 0 && (state === 'play' || state === 'end')) ctx.translate(rand(-6, 6) * g.shake * 2, rand(-6, 6) * g.shake * 2);
+  if (g && playing && g.mester) drawMesterBody(ctx, g.mester); // bag tingene, så sømmene altid kan ses
   if (g && playing) for (const it of g.items) if (!it.passed) drawItem(ctx, it); // på vej ned: bag kassen
   drawCrate(ctx, player.x, player.bounce, g ? g.pile : []);
   if (g && playing) for (const it of g.items) if (it.passed) drawItem(ctx, it);  // forbi kassen: foran den
   drawBench(ctx);
   ctx.restore();
+  if (g && playing && g.mester) drawMesterBubble(ctx, g.mester);
   if (g && (playing || (state === 'end' && ov.classList.contains('hide')))) { drawHurt(ctx); drawHUD(ctx); }
 
   // partikler, konfetti og flydende tekst på det øverste lag (også over svendebrevet)
@@ -1111,6 +1162,71 @@ function drawHurt(c) {
   for (let i = 0; i < CONFIG.lives; i++) {
     heart(c, player.x + ((CONFIG.lives - 1) / 2 - i) * 17, CATCH_Y - 62, .75, i < g.hearts ? '#e8475a' : 'rgba(255,255,255,.45)');
   }
+  c.globalAlpha = 1;
+}
+// Mester tegnet med front mod højre (spejles, når han kommer fra højre side). pose 0 = armen oppe med søm, 1 = har kastet.
+function drawMester(c, pose) {
+  c.save();
+  c.lineCap = 'round'; c.lineJoin = 'round';
+  const SKIN = '#f0c08a', JACKET = '#2f5f8f', JACKET_D = '#244a70', OUT = '#1d2b3a';
+  // damp fra hovedet – han er rasende
+  c.fillStyle = 'rgba(235,235,235,.75)';
+  for (const [x, y, ph] of [[-16, -70, 0], [14, -74, 2]]) { c.beginPath(); c.arc(x, y - Math.abs(Math.sin(clock * 5 + ph)) * 5, 4 + Math.sin(clock * 7 + ph) * 1.5, 0, 7); c.fill(); }
+  // bageste arm
+  c.beginPath(); c.moveTo(-20, -6); c.lineTo(-30, 34);
+  c.strokeStyle = OUT; c.lineWidth = 15; c.stroke(); c.strokeStyle = JACKET_D; c.lineWidth = 11; c.stroke();
+  c.fillStyle = SKIN; c.beginPath(); c.arc(-31, 38, 6, 0, 7); c.fill();
+  // krop: arbejdsjakke + læderforklæde med lomme og tømrerblyant
+  c.fillStyle = JACKET; c.strokeStyle = OUT; c.lineWidth = 2; rr(c, -28, -14, 56, 80, 14); c.fill(); c.stroke();
+  c.fillStyle = '#8a5a2b'; c.strokeStyle = '#5b3a1e'; c.lineWidth = 1.5; rr(c, -20, 4, 40, 62, 6); c.fill(); c.stroke();
+  c.fillStyle = '#7a4a22'; rr(c, -12, 24, 24, 16, 3); c.fill(); c.stroke();
+  c.save(); c.translate(6, 22); c.rotate(-.3); c.fillStyle = '#d33a3a'; c.fillRect(-2, -12, 4, 14); c.restore();
+  // hoved
+  c.fillStyle = SKIN; c.strokeStyle = '#b07a4a'; c.lineWidth = 1.5; c.beginPath(); c.arc(0, -36, 21, 0, 7); c.fill(); c.stroke();
+  c.fillStyle = 'rgba(220,60,50,.45)';
+  c.beginPath(); c.ellipse(12, -29, 7, 5, 0, 0, 7); c.fill(); c.beginPath(); c.ellipse(-8, -30, 6, 4.5, 0, 0, 7); c.fill();
+  c.fillStyle = '#e09a6a'; c.beginPath(); c.ellipse(11, -34, 6, 5, 0, 0, 7); c.fill(); // næse
+  c.fillStyle = '#1d1410'; for (const ex of [-1, 14]) { c.beginPath(); c.arc(ex, -42, 2.3, 0, 7); c.fill(); }
+  c.strokeStyle = '#3b2a1a'; c.lineWidth = 3.4; // vrede øjenbryn
+  c.beginPath(); c.moveTo(-8, -52); c.lineTo(4, -46); c.moveTo(21, -52); c.lineTo(10, -46); c.stroke();
+  c.fillStyle = '#7a1d1d'; c.beginPath(); c.ellipse(10, -20, 6, pose ? 6 : 4.5, 0, 0, 7); c.fill(); // råbende mund
+  c.fillStyle = '#dcd6cc'; c.strokeStyle = '#9a948a'; c.lineWidth = 1; // stort overskæg
+  c.beginPath(); c.moveTo(-5, -27); c.quadraticCurveTo(3, -33, 11, -28); c.quadraticCurveTo(19, -33, 27, -27);
+  c.quadraticCurveTo(19, -22, 11, -25); c.quadraticCurveTo(3, -22, -5, -27); c.closePath(); c.fill(); c.stroke();
+  // kasket
+  c.fillStyle = '#4a4a4f'; c.strokeStyle = '#2a2a2e'; c.lineWidth = 1.5;
+  c.beginPath(); c.moveTo(-21, -42); c.quadraticCurveTo(-18, -64, 4, -62); c.quadraticCurveTo(22, -60, 22, -47); c.closePath(); c.fill(); c.stroke();
+  c.beginPath(); c.ellipse(25, -46, 12, 3.5, -.15, 0, 7); c.fill(); c.stroke();
+  // forreste arm: oppe med søm (klar til at kaste) eller strakt frem (har kastet)
+  const hx = pose ? 46 : 22, hy = pose ? -20 : -62;
+  c.beginPath(); c.moveTo(18, -6); c.quadraticCurveTo(pose ? 36 : 34, pose ? -14 : -30, hx, hy);
+  c.strokeStyle = OUT; c.lineWidth = 15; c.stroke(); c.strokeStyle = JACKET; c.lineWidth = 11; c.stroke();
+  c.fillStyle = SKIN; c.beginPath(); c.arc(hx, hy, 6.5, 0, 7); c.fill();
+  if (!pose) {
+    c.strokeStyle = '#aab2ba'; c.lineWidth = 2.2;
+    for (const d of [-5, 0, 5]) { c.beginPath(); c.moveTo(hx + d, hy - 3); c.lineTo(hx + d * 1.4, hy - 16); c.stroke(); }
+  }
+  c.restore();
+}
+function drawMesterBody(c, m) {
+  c.save(); c.translate(mesterX(m), m.y); c.scale(m.side, 1);
+  drawMester(c, m.t >= .8 ? 1 : 0);
+  c.restore();
+}
+function drawMesterBubble(c, m) {
+  if (m.t < .2 || m.t > 1.75) return;
+  const text = 'Dumme lærlinge!';
+  c.font = '800 16px system-ui,sans-serif';
+  const bw = c.measureText(text).width + 22, bh = 32, mx = mesterX(m);
+  const bx = m.side === 1 ? clamp(mx + 30, 4, W - bw - 4) : clamp(mx - 30 - bw, 4, W - bw - 4), by = m.y - 122;
+  const tipX = mx + m.side * 16, tipY = m.y - 58, baseX = m.side === 1 ? bx + 22 : bx + bw - 22;
+  c.globalAlpha = clamp(Math.min((m.t - .2) / .12, (1.75 - m.t) / .12), 0, 1);
+  c.fillStyle = '#fffdf6'; c.strokeStyle = '#3b2412'; c.lineWidth = 2.5;
+  rr(c, bx, by, bw, bh, 10); c.fill(); c.stroke();
+  c.beginPath(); c.moveTo(baseX - 7, by + bh - 1.5); c.lineTo(tipX, tipY); c.lineTo(baseX + 7, by + bh - 1.5); c.closePath(); c.fill();
+  c.beginPath(); c.moveTo(baseX - 7, by + bh); c.lineTo(tipX, tipY); c.lineTo(baseX + 7, by + bh); c.stroke();
+  c.fillStyle = '#b3262c'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillText(text, bx + bw / 2, by + bh / 2 + 1);
   c.globalAlpha = 1;
 }
 function drawHUD(c) {
