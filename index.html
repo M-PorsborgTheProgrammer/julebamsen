@@ -86,9 +86,10 @@
 'use strict';
 // ===================== RET HER =====================
 const CONFIG = {
-  herName: "",      // hendes navn, fx "Sofie". Tomt = hun skriver selv sit navn på svendebrevet.
-  fromName: "",     // dit navn – står på svendebrevet (tomt = "afsenderen")
-  message: "",      // valgfri hilsen på svendebrevet, fx "Bamsen udleveres personligt – du bestemmer hvornår."
+  herName: "Tonje",  // hendes navn – står på svendebrevet, i hilsenen og på høvlebænken (tomt = hun skriver det selv)
+  fromName: "",      // dit navn – står på svendebrevet (tomt = "afsenderen")
+  redeem: "d. 15. november", // hvornår bamsen indløses (tomt = ingen dato)
+  message: "",       // valgfri hilsen på svendebrevet, fx "Bamsen udleveres personligt – du bestemmer hvornår."
   target: 2000,     // point i ét forsøg for at vinde julebamsen
   lives: 3,         // liv pr. forsøg – et søm i kassen eller en tabt ting koster ét
 };
@@ -919,7 +920,7 @@ function showWin() {
       <div class="prize">Én (1) ${P.navn}</div>
       <div class="small">(${P.joke})</div>
       ${CONFIG.message ? `<p class="msg">»${esc(CONFIG.message)}«</p>` : ''}
-      <p class="small">Indløses hos ${from || 'afsenderen'}<br>${esc(store.wonDate || '')}</p>
+      <p class="small">Indløses hos ${from || 'afsenderen'}${CONFIG.redeem ? ' ' + esc(CONFIG.redeem) : ''}${store.wonDate ? `<br>Udstedt ${esc(store.wonDate)}` : ''}</p>
       <div class="seal">★</div>
     </div>
     <p>Tag et screenshot og send det til ${from || 'mig'} 😉</p>
