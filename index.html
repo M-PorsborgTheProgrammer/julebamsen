@@ -10,11 +10,17 @@
 <meta property="og:title" content="Jagten på julebamsen">
 <meta property="og:description" content="Fang værktøj, undgå søm – og vind en julebamse 🎄">
 <meta property="og:type" content="website">
+<meta property="og:site_name" content="Jagten på julebamsen">
+<meta property="og:locale" content="da_DK">
 <meta property="og:url" content="https://m-porsborgtheprogrammer.github.io/julebamsen/">
-<meta property="og:image" content="https://m-porsborgtheprogrammer.github.io/julebamsen/preview.png">
+<meta property="og:image" content="https://m-porsborgtheprogrammer.github.io/julebamsen/preview.jpg">
+<meta property="og:image:secure_url" content="https://m-porsborgtheprogrammer.github.io/julebamsen/preview.jpg">
+<meta property="og:image:type" content="image/jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="Julebamse i rød- og hvidternede overalls foran et juleoplyst værksted">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://m-porsborgtheprogrammer.github.io/julebamsen/preview.jpg">
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>">
 <style>
   * { box-sizing: border-box; }
@@ -920,7 +926,7 @@ function showWin() {
       <div class="prize">Én (1) ${P.navn}</div>
       <div class="small">(${P.joke})</div>
       ${CONFIG.message ? `<p class="msg">»${esc(CONFIG.message)}«</p>` : ''}
-      <p class="small">Indløses hos ${from || 'afsenderen'}${CONFIG.redeem ? ' ' + esc(CONFIG.redeem) : ''}${store.wonDate ? `<br>Udstedt ${esc(store.wonDate)}` : ''}</p>
+      <p class="small">Indløses hos ${from || 'afsenderen'}${CONFIG.redeem ? ' ' + esc(CONFIG.redeem) : ''}</p>
       <div class="seal">★</div>
     </div>
     <p>Tag et screenshot og send det til ${from || 'mig'} 😉</p>
