@@ -1,0 +1,1175 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no,viewport-fit=cover">
+<meta name="theme-color" content="#1a0f08">
+<meta name="robots" content="noindex">
+<title>Jagten på julebamsen</title>
+<meta name="description" content="Fang værktøj, undgå søm – og vind en julebamse 🎄">
+<meta property="og:title" content="Jagten på julebamsen">
+<meta property="og:description" content="Fang værktøj, undgå søm – og vind en julebamse 🎄">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://m-porsborgtheprogrammer.github.io/julebamsen/">
+<meta property="og:image" content="https://m-porsborgtheprogrammer.github.io/julebamsen/preview.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎄</text></svg>">
+<style>
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; overflow: hidden; overscroll-behavior: none; touch-action: pan-y;
+    font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-user-select: none; user-select: none; -webkit-touch-callout: none; -webkit-tap-highlight-color: transparent; }
+  body { display: flex; align-items: center; justify-content: center;
+    background: radial-gradient(circle at 50% 40%, #3a2414, #140b05 70%); }
+  #wrap { position: relative; box-shadow: 0 0 3em rgba(0,0,0,.6); }
+  #c { display: block; touch-action: none; }
+  #ov { position: absolute; top: 0; right: 0; bottom: 0; left: 0; display: flex; padding: .9em .8em;
+    background: rgba(18,10,4,.5); overflow-y: auto; -webkit-overflow-scrolling: touch; touch-action: pan-y; }
+  #ov.hide { display: none; }
+  #fx { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+  .card { position: relative; margin: auto; width: 100%; max-width: 22.5em; background: #fbf3e4; color: #3b2412;
+    text-align: center; border-radius: 1em; padding: .9em 1em .9em; border: .22em solid #8a5a2b;
+    box-shadow: 0 .6em 2em rgba(0,0,0,.55), inset 0 0 0 .2em #f1e2c6; animation: pop .35s ease-out; }
+  @keyframes pop { from { transform: scale(.92); } to { transform: none; } }
+  @media (prefers-reduced-motion: reduce) { .card, .prize-cv { animation: none !important; } }
+  .kicker { font-weight: 800; color: #2e7d4f; font-size: .95em; }
+  h1 { font-size: 1.8em; margin: .05em 0 0; color: #b3262c; line-height: 1.05; letter-spacing: -.01em; }
+  h2 { font-size: 1.7em; margin: 0; color: #b3262c; line-height: 1.1; }
+  p { margin: .45em 0; line-height: 1.35; font-size: .9em; }
+  .small { font-size: .76em; color: #7a5a3a; line-height: 1.35; }
+  .big { font-size: 2.6em; font-weight: 800; color: #e8742c; line-height: 1.05; margin-top: .15em; }
+  .prize-cv { display: block; margin: .1em auto 0; width: 6em; height: 6em; animation: bob 2.6s ease-in-out infinite; }
+  @keyframes bob { 0%, 100% { transform: translateY(0) rotate(-2deg); } 50% { transform: translateY(-.2em) rotate(2deg); } }
+  .legend { display: grid; grid-template-columns: 1fr 1fr; gap: .25em; margin: .45em 0; text-align: left; font-size: .76em; }
+  .legend div { display: flex; align-items: center; gap: .3em; background: #f1e3c8; border-radius: .5em; padding: .1em .3em; line-height: 1.2; }
+  .legend .bad { grid-column: 1 / -1; background: #f7d6cc; color: #8e2a17; }
+  .legend canvas { width: 2.5em; height: 2.5em; flex: none; }
+  .legend b { display: block; }
+  .bar { height: .9em; background: #e2cfae; border-radius: 1em; overflow: hidden; margin: .45em 0 .15em;
+    box-shadow: inset 0 .1em .2em rgba(0,0,0,.15); }
+  .bar > i { display: block; height: 100%; border-radius: 1em; background: linear-gradient(90deg, #c8352f, #e8742c, #f4c430); }
+  button { font: inherit; font-weight: 800; font-size: 1.1em; background: #c8352f; color: #fff; border: none;
+    border-radius: .6em; padding: .6em 1.3em; margin: .5em .2em 0; box-shadow: 0 .22em 0 #8f1f1b; cursor: pointer;
+    touch-action: pan-y; }
+  button:active { transform: translateY(.15em); box-shadow: 0 .07em 0 #8f1f1b; }
+  button.alt { background: #8a5a2b; box-shadow: 0 .22em 0 #5b3a1e; font-size: .92em; }
+  button.mute { position: absolute; top: .35em; right: .35em; width: 2em; height: 2em; padding: 0; margin: 0;
+    font-size: .85em; border-radius: 50%; background: #efe0c4; box-shadow: none; }
+  /* svendebrev */
+  .cert { position: relative; background: #fffaf0; border: .2em double #8a5a2b; outline: .12em solid #d8b878;
+    outline-offset: -.55em; padding: 1em .9em .9em; font-family: Georgia, "Times New Roman", serif; }
+  .cert-top { font-size: 1.45em; letter-spacing: .14em; font-weight: 700; color: #6b3a16; }
+  .cert-sub { font-style: italic; color: #8a5a2b; font-size: .85em; }
+  .cert-name { font-size: 1.45em; font-style: italic; color: #3b2412; border-bottom: 1px solid #b8955e;
+    display: inline-block; padding: 0 .4em; margin: .05em 0 .15em; }
+  input.cert-name { font-family: inherit; width: 85%; text-align: center; background: transparent; border: none;
+    border-bottom: 1px solid #b8955e; border-radius: 0; outline: none; -webkit-user-select: text; user-select: text; }
+  input.cert-name::placeholder { color: #c9ad86; }
+  .cert .prize-cv { width: 4.4em; height: 4.4em; }
+  .prize { font-size: 1.25em; font-weight: 700; color: #b3262c; }
+  .msg { font-style: italic; color: #6b3a16; }
+  .seal { position: absolute; right: .5em; bottom: .45em; width: 2.3em; height: 2.3em; border-radius: 50%;
+    background: radial-gradient(circle at 35% 35%, #e0533f, #9c2618); color: #ffd9c9; display: flex;
+    align-items: center; justify-content: center; box-shadow: 0 .1em .3em rgba(0,0,0,.4); transform: rotate(-12deg); }
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="c"></canvas>
+  <div id="ov"></div>
+  <canvas id="fx"></canvas>
+</div>
+
+<script>
+'use strict';
+// ===================== RET HER =====================
+const CONFIG = {
+  herName: "",      // hendes navn, fx "Sofie". Tomt = hun skriver selv sit navn på svendebrevet.
+  fromName: "",     // dit navn – står på svendebrevet (tomt = "afsenderen")
+  message: "",      // valgfri hilsen på svendebrevet, fx "Bamsen udleveres personligt – du bestemmer hvornår."
+  target: 2000,     // point i ét forsøg for at vinde julebamsen
+  lives: 3,         // liv pr. forsøg – et søm i kassen eller en tabt ting koster ét
+};
+// Hvert forsøg starter forfra på 0 point. Efter et mislykket forsøg bliver spillet usynligt lidt lettere
+// (mere, jo længere hun var fra målet), så de fleste vinder i 2.–5. forsøg.
+// Test selv: sæt #test sidst i adressen (lavt mål, intet gemmes). #nulstil sletter de gemte forsøg på enheden.
+// ===================================================
+
+const TEST = location.hash === '#test';
+if (TEST) CONFIG.target = 300;
+
+// Banen er altid 400 bred; højden vokser på høje telefoner (640–900), så hele skærmen bruges.
+const W = 400, CRATE_W = 98, CRATE_H = 48;
+let H = 640, BENCH_Y = 580, CATCH_Y = 540, FALL = 1;
+function layout(h) {
+  H = h; BENCH_Y = H - 60; CATCH_Y = BENCH_Y - CRATE_H + 8;
+  FALL = (CATCH_Y + 40) / 580; // faldhastigheden skaleres, så faldtiden er den samme uanset højde
+}
+const WX = 280, WY = 104, WW = 90, WH = 114; // vinduet
+
+const cv = document.getElementById('c'), ctx = cv.getContext('2d');
+const fxc = document.getElementById('fx'), fctx = fxc.getContext('2d'); // partikler og tekst – ligger over alt andet
+const wrap = document.getElementById('wrap'), ov = document.getElementById('ov');
+const bg = document.createElement('canvas');
+let pr = 1;
+
+// ---------- små hjælpere ----------
+const rand = (a, b) => a + Math.random() * (b - a);
+const lerp = (a, b, t) => a + (b - a) * t;
+const clamp = (v, a, b) => Math.max(a, Math.min(b, v));
+const pick = arr => arr[Math.floor(Math.random() * arr.length)];
+const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+const esc = s => String(s).replace(/[&<>"']/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[ch]));
+const possessive = n => /[sxz]$/i.test(n) ? n + "'" : n + 's';
+function rr(c, x, y, w, h, r) {
+  c.beginPath(); c.moveTo(x + r, y);
+  c.arcTo(x + w, y, x + w, y + h, r); c.arcTo(x + w, y + h, x, y + h, r);
+  c.arcTo(x, y + h, x, y, r); c.arcTo(x, y, x + w, y, r); c.closePath();
+}
+function heart(c, x, y, s, fill) {
+  c.save(); c.translate(x, y); c.scale(s, s); c.beginPath();
+  c.moveTo(0, 6); c.bezierCurveTo(-12, -2, -7, -12, 0, -5); c.bezierCurveTo(7, -12, 12, -2, 0, 6);
+  c.fillStyle = fill; c.fill(); c.restore();
+}
+
+// ---------- gemte forsøg ----------
+// Gemmes i browserens localStorage og læses igen før hver skrivning, så to åbne faner ikke overskriver hinanden.
+const KEY = 'julebamse_v2';
+const store = { attempts: 0, best: 0, skill: 1, won: false, wonDate: '', wonScore: 0, wonAttempt: 0, name: '', muted: false };
+function load() {
+  if (TEST) return;
+  try {
+    const s = JSON.parse(localStorage.getItem(KEY) || 'null');
+    if (s && typeof s === 'object') Object.assign(store, s);
+  } catch (e) {}
+  const num = v => Math.max(0, Math.floor(+v) || 0);
+  for (const k of ['attempts', 'best', 'wonScore', 'wonAttempt']) store[k] = num(store[k]);
+  store.skill = Math.min(1, Math.max(0, +store.skill));
+  if (!(store.skill >= 0)) store.skill = 1;
+  store.won = store.won === true; store.muted = store.muted === true;
+  for (const k of ['wonDate', 'name']) if (typeof store[k] !== 'string') store[k] = '';
+}
+function save() { if (!TEST) try { localStorage.setItem(KEY, JSON.stringify(store)); } catch (e) {} }
+if (!TEST) {
+  try {
+    if (location.hash === '#nulstil') {
+      if (confirm('Slet alle gemte forsøg på denne enhed?')) localStorage.removeItem(KEY);
+      history.replaceState(null, '', location.pathname + location.search);
+    }
+  } catch (e) {}
+  load();
+}
+addEventListener('hashchange', () => location.reload());
+
+// =============== TINGENE DER FALDER ===============
+function drawPlank(c) { // bøgeplanke
+  c.save();
+  const w = 66, h = 15;
+  const g = c.createLinearGradient(0, -h / 2, 0, h / 2);
+  g.addColorStop(0, '#f0c98f'); g.addColorStop(1, '#c98d4f');
+  c.fillStyle = g; rr(c, -w / 2, -h / 2, w, h, 2); c.fill();
+  c.strokeStyle = 'rgba(120,70,30,.4)'; c.lineWidth = 1;
+  for (let i = 0; i < 3; i++) {
+    const y = -h / 2 + 4 + i * 3.5;
+    c.beginPath(); c.moveTo(-w / 2 + 3, y); c.bezierCurveTo(-10, y - 2.5, 10, y + 2.5, w / 2 - 6, y); c.stroke();
+  }
+  c.fillStyle = '#b5773d'; c.fillRect(w / 2 - 5, -h / 2 + 1.5, 3.5, h - 3);
+  c.strokeStyle = '#7f5127'; c.lineWidth = 1.5; rr(c, -w / 2, -h / 2, w, h, 2); c.stroke();
+  c.restore();
+}
+function drawGlue(c) { // limflaske
+  c.save();
+  c.fillStyle = '#e8742c'; c.beginPath();
+  c.moveTo(-7, -11); c.lineTo(7, -11); c.lineTo(3, -19); c.lineTo(1, -27); c.lineTo(-1, -27); c.lineTo(-3, -19);
+  c.closePath(); c.fill();
+  const g = c.createLinearGradient(-12, 0, 12, 0);
+  g.addColorStop(0, '#fffdf6'); g.addColorStop(.6, '#efe9d8'); g.addColorStop(1, '#d2c9b2');
+  c.fillStyle = g; rr(c, -12, -12, 24, 32, 5); c.fill();
+  c.strokeStyle = '#9b927c'; c.lineWidth = 1.5; c.stroke();
+  c.fillStyle = '#2f6db5'; c.fillRect(-12, -2, 24, 13);
+  c.fillStyle = '#fff'; c.font = 'bold 8px sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillText('LIM', 0, 4.5);
+  c.restore();
+}
+function drawRuler(c) { // tommestok
+  c.save();
+  const seg = ang => {
+    c.save(); c.translate(0, -20); c.rotate(ang);
+    c.fillStyle = '#f4c430'; c.fillRect(-4, 0, 8, 42);
+    c.strokeStyle = '#a07c10'; c.lineWidth = 1; c.strokeRect(-4, 0, 8, 42);
+    c.strokeStyle = '#222';
+    for (let y = 4, i = 0; y < 41; y += 4, i++) { c.beginPath(); c.moveTo(-4, y); c.lineTo(i % 2 ? -1 : 1.5, y); c.stroke(); }
+    c.restore();
+  };
+  seg(.38); seg(-.38);
+  c.fillStyle = '#b08d3a'; c.beginPath(); c.arc(0, -19, 2.5, 0, 7); c.fill();
+  c.restore();
+}
+function drawClamp(c) { // skruetvinge
+  c.save(); c.translate(-1, -4);
+  c.fillStyle = '#9aa3ab'; c.fillRect(-14, -22, 6, 48);
+  c.fillStyle = '#5b6670'; rr(c, -15, -24, 32, 8, 2); c.fill(); rr(c, -15, 8, 32, 8, 2); c.fill();
+  c.fillStyle = '#c9ced3'; c.fillRect(10, -13, 3, 22);
+  c.fillStyle = '#333'; c.fillRect(6.5, -15, 10, 3);
+  c.fillStyle = '#b5773d'; rr(c, 7, 16, 9, 17, 3); c.fill(); // træhåndtag – rødt betyder kun fare
+  c.restore();
+}
+function drawStar(c) { // træstjerne – julepynt fra CNC'en
+  c.save();
+  c.strokeStyle = '#2e7d4f'; c.lineWidth = 1.6;
+  c.beginPath(); c.moveTo(0, -14); c.bezierCurveTo(-9, -34, 9, -34, 0, -14); c.stroke();
+  const star = () => {
+    c.beginPath();
+    for (let i = 0; i < 10; i++) { const r = i % 2 ? 9 : 21, a = -Math.PI / 2 + i * Math.PI / 5; c.lineTo(Math.cos(a) * r, Math.sin(a) * r); }
+    c.closePath();
+  };
+  const g = c.createLinearGradient(-20, -20, 20, 20);
+  g.addColorStop(0, '#f7e4b8'); g.addColorStop(1, '#d9b674');
+  star(); c.fillStyle = g; c.fill();
+  c.save(); star(); c.clip();
+  c.strokeStyle = 'rgba(150,110,50,.3)'; c.lineWidth = 1;
+  for (const y of [-6, 0, 6, 12]) { c.beginPath(); c.moveTo(-22, y); c.quadraticCurveTo(0, y - 4, 22, y); c.stroke(); }
+  c.restore();
+  star(); c.strokeStyle = '#9c7a3e'; c.lineWidth = 1.5; c.stroke();
+  c.fillStyle = '#6b4423'; c.beginPath(); c.arc(0, -13, 1.8, 0, 7); c.fill();
+  c.restore();
+}
+function drawPlane(c) { // gylden høvl
+  c.save();
+  const g = c.createLinearGradient(-28, -10, 28, 10);
+  g.addColorStop(0, '#b8860b'); g.addColorStop(.5, '#ffe27a'); g.addColorStop(1, '#c9971c');
+  c.fillStyle = '#8b4a2b';
+  c.beginPath(); c.moveTo(-22, -2); c.quadraticCurveTo(-27, -19, -14, -19); c.lineTo(-10, -19);
+  c.quadraticCurveTo(-13, -8, -8, -2); c.closePath(); c.fill();
+  c.beginPath(); c.ellipse(18, -7, 5, 6, 0, 0, 7); c.fill();
+  c.fillStyle = g; c.strokeStyle = '#7a5a00'; c.lineWidth = 1.2;
+  c.beginPath(); c.moveTo(-6, -2); c.lineTo(2, -15); c.lineTo(8, -15); c.lineTo(4, -2); c.closePath(); c.fill(); c.stroke();
+  rr(c, -28, -2, 56, 12, 3); c.fill(); c.stroke();
+  c.restore();
+}
+function drawNail(c) { // søm – undgå!
+  c.save();
+  const g = c.createLinearGradient(-3, 0, 3, 0);
+  g.addColorStop(0, '#5d636a'); g.addColorStop(.5, '#dfe3e7'); g.addColorStop(1, '#4f565d');
+  c.fillStyle = g; c.fillRect(-2.5, -16, 5, 28);
+  c.beginPath(); c.moveTo(-2.5, 12); c.lineTo(2.5, 12); c.lineTo(0, 20); c.closePath(); c.fill();
+  c.beginPath(); c.ellipse(0, -17, 8, 3, 0, 0, 7); c.fill();
+  c.strokeStyle = '#3a4046'; c.lineWidth = 1; c.stroke();
+  c.restore();
+}
+
+const TYPES = {
+  plank: { name: 'Bøgeplanke',  pts: 10, w: 66, box: 92, weight: 30, draw: drawPlank },
+  glue:  { name: 'Limflaske',   pts: 15, w: 26, box: 66, weight: 25, draw: drawGlue },
+  ruler: { name: 'Tommestok',   pts: 20, w: 34, box: 66, weight: 18, draw: drawRuler },
+  clamp: { name: 'Skruetvinge', pts: 25, w: 34, box: 74, weight: 12, draw: drawClamp },
+  star:  { name: 'CNC-stjerne', pts: 30, w: 42, box: 74, weight: 7,  draw: drawStar },
+  plane: { name: 'Gylden høvl', pts: 60, w: 58, box: 74, weight: 4,  draw: drawPlane, gold: true },
+  nail:  { name: 'Søm',         pts: 0,  w: 18, box: 56, weight: 13, draw: drawNail, bad: true },
+};
+
+// =============== PRÆMIEN: den rigtige julebamse ===============
+// Julebamse — PLUSH TEXTURE version.
+// The little Christmas teddy ornament: shaggy camel fur with a tufted edge, a big cream velvet muzzle
+// with an embroidered nose and lopsided smile, black bead eyes, a white twisted hanging string, and
+// red/cream gingham dungarees with a little bow. Centred at (0,0), fits x ±55, y ±62 (130 box).
+function drawJulebamse(c) {
+  c.save();
+  c.translate(4, 0); // the left arm sticks out, so nudge the whole bear right to keep it centred
+  c.lineCap = 'round'; c.lineJoin = 'round';
+  const TAU = Math.PI * 2, TILT = .16; // the head leans a little, like the real one
+  const FUR_OUT = '#a17a4b', FUR_HI = '#edd6aa', FUR = '#d8b683', FUR_LO = '#b98f5b';
+  const RED = 'rgba(168,12,28,.68)', RED_OUT = '#7d1019', CREAM = '#f3e7d0', THREAD = '#5a2e1b';
+  // fixed tuft pattern + fixed-seed generator: the bear looks identical every time
+  const TUFT = [1, .6, 1.2, .78, 1.32, .68, 1.06, .52, 1.24, .88, .64, 1.14, .82, 1.28];
+  const LEAN = [.2, -.12, .3, -.26, .08, .34, -.18, .26, -.3, .12, -.08, .32, -.22, .16];
+  let seed = 1224;
+  const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
+  let g;
+
+  // closed path: ellipse with a scalloped, slightly leaning tufted edge
+  function fluff(rx, ry, n, amp, k) {
+    c.beginPath();
+    for (let i = 0; i <= n; i++) {
+      const a = i / n * TAU - Math.PI / 2, x = Math.cos(a) * rx, y = Math.sin(a) * ry;
+      if (!i) { c.moveTo(x, y); continue; }
+      const j = (i + k) % TUFT.length, m = a - (.5 + LEAN[j]) * TAU / n, h = 2 * amp * TUFT[j];
+      c.quadraticCurveTo(Math.cos(m) * (rx + h), Math.sin(m) * (ry + h), x, y);
+    }
+    c.closePath();
+  }
+  // a fur piece = tufted ellipse at (x,y) rotated r
+  const piece = (x, y, r, rx, ry, n, amp, k) => ({ x, y, r, rx, ry, n, amp, k });
+  const shape = p => { c.save(); c.translate(p.x, p.y); c.rotate(p.r); fluff(p.rx, p.ry, p.n, p.amp, p.k); c.restore(); };
+  // pass 1: soft brown outline around all pieces, so they merge into one silhouette
+  const outline = ps => { c.fillStyle = c.strokeStyle = FUR_OUT; c.lineWidth = 3.4; for (const p of ps) { shape(p); c.fill(); c.stroke(); } };
+  // pass 2: shaded fur + little curls
+  function furFill(p) {
+    shape(p);
+    const s = Math.max(p.rx, p.ry), fg = c.createRadialGradient(p.x - s * .3, p.y - s * .42, 1, p.x, p.y, s * 1.2);
+    fg.addColorStop(0, FUR_HI); fg.addColorStop(.5, FUR); fg.addColorStop(1, FUR_LO);
+    c.fillStyle = fg; c.fill();
+    c.save(); c.clip(); c.translate(p.x, p.y); c.rotate(p.r);
+    c.lineWidth = .75;
+    for (let i = 0, n = Math.round(p.rx * p.ry / 7); i < n; i++) {
+      const a = rnd() * TAU, d = Math.sqrt(rnd()), x = Math.cos(a) * p.rx * d, y = Math.sin(a) * p.ry * d;
+      const lit = -x / p.rx * .5 - y / p.ry * .7 + rnd() - .5 > 0, r = .8 + rnd() * .7, a0 = rnd() * TAU;
+      c.strokeStyle = lit ? 'rgba(255,246,226,.42)' : 'rgba(140,98,52,.3)';
+      c.beginPath(); c.arc(x, y, r, a0, a0 + 3.4 + rnd() * 1.6); c.stroke();
+    }
+    c.restore();
+  }
+  // gingham: cream cloth + semi-transparent red bands; where the bands cross they come out darker
+  function gingham(x0, y0, x1, y1, P, B, ox, oy) {
+    c.fillStyle = CREAM; c.fillRect(x0, y0, x1 - x0, y1 - y0);
+    c.fillStyle = RED;
+    for (let x = x0 + ox; x < x1; x += P) c.fillRect(x, y0, B, y1 - y0);
+    for (let y = y0 + oy; y < y1; y += P) c.fillRect(x0, y, x1 - x0, B);
+  }
+
+  // ---------- hanging string: twisted white cord ending in a loop ----------
+  const CORD = [[[5.4, -37], [6, -41.5], [6.6, -44.8], [7.2, -48]],
+    [[7.2, -48], [-2.6, -50.5], [-3.6, -59.6], [5, -59.6]],
+    [[5, -59.6], [13.6, -59.6], [16.8, -51], [7.2, -48]]];
+  const cord = () => { c.beginPath(); c.moveTo(5.4, -37); for (const s of CORD) c.bezierCurveTo(s[1][0], s[1][1], s[2][0], s[2][1], s[3][0], s[3][1]); };
+  c.strokeStyle = '#a3957f'; c.lineWidth = 3.6; cord(); c.stroke();
+  c.strokeStyle = '#fdfcf8'; c.lineWidth = 2.2; cord(); c.stroke();
+  c.strokeStyle = 'rgba(150,132,105,.5)'; c.lineWidth = .6; c.beginPath();
+  for (const [p0, p1, p2, p3] of CORD) {
+    const steps = Math.round((Math.hypot(p1[0] - p0[0], p1[1] - p0[1]) + Math.hypot(p2[0] - p1[0], p2[1] - p1[1]) + Math.hypot(p3[0] - p2[0], p3[1] - p2[1])) / 1.9);
+    for (let i = 0; i < steps; i++) {
+      const t = (i + .5) / steps, u = 1 - t;
+      const P = k => u * u * u * p0[k] + 3 * u * u * t * p1[k] + 3 * u * t * t * p2[k] + t * t * t * p3[k];
+      const D = k => 3 * u * u * (p1[k] - p0[k]) + 6 * u * t * (p2[k] - p1[k]) + 3 * t * t * (p3[k] - p2[k]);
+      const x = P(0), y = P(1), l = Math.hypot(D(0), D(1)) || 1, tx = D(0) / l, ty = D(1) / l;
+      c.moveTo(x - ty * .95 - tx * .6, y + tx * .95 - ty * .6); c.lineTo(x + ty * .95 + tx * .6, y - tx * .95 + ty * .6);
+    }
+  }
+  c.stroke();
+
+  // ---------- fur behind the dungarees: feet, arms, tummy ----------
+  const FEET = [piece(-11.8, 49.6, -.1, 10.4, 8.2, 16, 1.05, 2), piece(11.8, 50, .1, 10.4, 8.2, 16, 1.05, 9)];
+  const ARMS = [piece(-26, 9.6, -.36, 12.5, 7, 18, 1, 4), piece(-38.5, 14.2, 0, 8, 7.8, 12, 1, 11), // left arm sticks out
+    piece(19.6, 10.2, .9, 10.5, 6.6, 16, 1, 6), piece(25.6, 17.4, 0, 7.4, 7.2, 12, 1, 1)]; // right arm hangs down
+  const BACK = [...FEET, ...ARMS, piece(0, 11, 0, 18, 14, 22, 1, 5)];
+  outline(BACK);
+  for (const p of BACK) furFill(p);
+  for (const p of FEET) { // shadow where the trouser legs sit on the feet
+    c.save(); shape(p); c.clip();
+    g = c.createLinearGradient(0, 43, 0, 50); g.addColorStop(0, 'rgba(90,52,20,.5)'); g.addColorStop(1, 'rgba(90,52,20,0)');
+    c.fillStyle = g; c.fillRect(p.x - 13, 40, 26, 10); c.restore();
+  }
+
+  // ---------- gingham dungarees ----------
+  const trousers = () => {
+    c.beginPath(); c.moveTo(-20, 16.5); c.lineTo(20, 16.5);
+    c.quadraticCurveTo(24.5, 21, 24.6, 29); c.lineTo(25.2, 42.4); c.quadraticCurveTo(25.3, 45.6, 22.2, 45.8);
+    c.quadraticCurveTo(12.5, 46.8, 2.6, 45.3); c.quadraticCurveTo(.8, 45, 0, 40.8); c.quadraticCurveTo(-.8, 45, -2.6, 45.3);
+    c.quadraticCurveTo(-12.5, 46.8, -22.2, 45.8); c.quadraticCurveTo(-25.3, 45.6, -25.2, 42.4); c.lineTo(-24.6, 29);
+    c.quadraticCurveTo(-24.5, 21, -20, 16.5); c.closePath();
+  };
+  const bib = () => {
+    c.beginPath(); c.moveTo(-15.2, 20); c.lineTo(-13.6, 1.5); c.quadraticCurveTo(-13.4, -1.5, -10.4, -1.5);
+    c.lineTo(10.4, -1.5); c.quadraticCurveTo(13.4, -1.5, 13.6, 1.5); c.lineTo(15.2, 20); c.closePath();
+  };
+  c.fillStyle = c.strokeStyle = RED_OUT; c.lineWidth = 2.8; trousers(); c.fill(); c.stroke();
+  c.save(); trousers(); c.clip();
+  gingham(-27, 15, 27, 48, 7.4, 4.1, 1.5, 1.1);
+  g = c.createLinearGradient(-26, 0, 26, 0); // cloth turning away at the sides and the middle
+  g.addColorStop(0, 'rgba(60,0,10,.42)'); g.addColorStop(.22, 'rgba(60,0,10,0)'); g.addColorStop(.4, 'rgba(60,0,10,0)');
+  g.addColorStop(.5, 'rgba(60,0,10,.3)'); g.addColorStop(.6, 'rgba(60,0,10,0)'); g.addColorStop(.78, 'rgba(60,0,10,0)'); g.addColorStop(1, 'rgba(60,0,10,.46)');
+  c.fillStyle = g; c.fillRect(-27, 15, 54, 33);
+  g = c.createLinearGradient(0, 16, 0, 47); // under the bib, and the turned-up hems
+  g.addColorStop(0, 'rgba(60,0,10,.42)'); g.addColorStop(.2, 'rgba(60,0,10,0)'); g.addColorStop(.86, 'rgba(60,0,10,0)'); g.addColorStop(1, 'rgba(60,0,10,.32)');
+  c.fillStyle = g; c.fillRect(-27, 15, 54, 33);
+  g = c.createLinearGradient(-26, 0, 26, 0); // light down the front of each leg
+  g.addColorStop(.12, 'rgba(255,248,236,0)'); g.addColorStop(.3, 'rgba(255,248,236,.18)'); g.addColorStop(.44, 'rgba(255,248,236,0)');
+  g.addColorStop(.6, 'rgba(255,248,236,0)'); g.addColorStop(.7, 'rgba(255,248,236,.1)'); g.addColorStop(.85, 'rgba(255,248,236,0)');
+  c.fillStyle = g; c.fillRect(-27, 15, 54, 33);
+  c.lineWidth = 1.8; c.strokeStyle = 'rgba(70,0,10,.2)'; // soft creases where the cloth bunches
+  c.beginPath(); c.moveTo(-2.5, 26); c.quadraticCurveTo(-6.5, 30, -7.5, 38); c.moveTo(2.5, 27); c.quadraticCurveTo(5.5, 31, 6.5, 37.5);
+  c.moveTo(-23, 24); c.quadraticCurveTo(-19, 27, -17.5, 33); c.stroke();
+  c.setLineDash([1.6, 1.3]); c.lineWidth = .7; c.strokeStyle = 'rgba(255,248,235,.75)'; // hem stitching
+  c.beginPath(); c.moveTo(-23.4, 43.2); c.quadraticCurveTo(-12.5, 44.4, -3.2, 42.9); c.moveTo(3.2, 42.9); c.quadraticCurveTo(12.5, 44.4, 23.4, 43.2); c.stroke();
+  c.setLineDash([]);
+  c.restore();
+  c.strokeStyle = 'rgba(95,5,15,.6)'; c.lineWidth = 1; c.beginPath(); c.moveTo(0, 20); c.lineTo(0, 40.6); c.stroke(); // centre seam
+
+  c.fillStyle = c.strokeStyle = RED_OUT; c.lineWidth = 2.6; bib(); c.fill(); c.stroke();
+  c.save(); bib(); c.clip();
+  gingham(-17, -3, 17, 22, 7.4, 4.1, 5.2, 4.7);
+  g = c.createLinearGradient(-15, 0, 15, 0);
+  g.addColorStop(0, 'rgba(60,0,10,.38)'); g.addColorStop(.3, 'rgba(60,0,10,0)'); g.addColorStop(.7, 'rgba(60,0,10,0)'); g.addColorStop(1, 'rgba(60,0,10,.42)');
+  c.fillStyle = g; c.fillRect(-17, -3, 34, 25);
+  c.translate(-2, 1); c.scale(1.5, .55); // soft shadow under the head
+  g = c.createRadialGradient(0, 0, 2, 0, 0, 16); g.addColorStop(0, 'rgba(50,15,0,.45)'); g.addColorStop(1, 'rgba(50,15,0,0)');
+  c.fillStyle = g; c.beginPath(); c.arc(0, 0, 16, 0, TAU); c.fill();
+  c.restore();
+
+  // ---------- head ----------
+  c.save(); c.translate(0, -19.4); c.rotate(TILT);
+  const HEAD = piece(0, 0, 0, 29.6, 23.2, 36, 1.3, 0);
+  const EARS = [piece(-20.8, -19, -.35, 8.8, 8.4, 11, .95, 3), piece(20.8, -19, .35, 8.8, 8.4, 11, .95, 8)];
+  outline([...EARS, HEAD]);
+  for (const e of EARS) {
+    furFill(e);
+    c.fillStyle = 'rgba(150,104,58,.4)'; c.beginPath(); c.ellipse(e.x * .93, e.y + 1, 4.8, 4.4, e.r, 0, TAU); c.fill();
+  }
+  furFill(HEAD);
+  // muzzle: smooth cream velvet, a little to the left because the head is turned
+  c.fillStyle = 'rgba(125,82,40,.25)'; c.beginPath(); c.ellipse(-3.8, 10.8, 13.6, 12.6, 0, 0, TAU); c.fill();
+  g = c.createRadialGradient(-9, 3.5, 1, -5, 9, 15);
+  g.addColorStop(0, '#fffbf2'); g.addColorStop(.55, '#f3ead8'); g.addColorStop(1, '#dccaa6');
+  c.fillStyle = g; c.strokeStyle = '#c6aa80'; c.lineWidth = 1;
+  c.beginPath(); c.ellipse(-5, 9, 12.8, 12.2, 0, 0, TAU); c.fill(); c.stroke();
+  // embroidered nose (stitched outline) and the lopsided smile
+  c.strokeStyle = THREAD; c.lineWidth = 1.5; c.fillStyle = 'rgba(110,62,36,.22)';
+  c.beginPath(); c.moveTo(-12.4, 1.2); c.quadraticCurveTo(-8, -1, -3.6, 1); c.quadraticCurveTo(-3, 2.4, -5.4, 4.6);
+  c.quadraticCurveTo(-7.7, 6.6, -10, 4.6); c.quadraticCurveTo(-12.9, 2.4, -12.4, 1.2); c.closePath(); c.fill(); c.stroke();
+  c.lineWidth = 1.1;
+  c.beginPath(); c.moveTo(-7.7, 6.2); c.lineTo(-7.9, 10.6); c.quadraticCurveTo(-4.5, 13.4, -.8, 9.6);
+  c.moveTo(-7.9, 10.6); c.quadraticCurveTo(-10.2, 12, -12, 10.4); c.stroke();
+  // black bead eyes
+  for (const [x, y] of [[-19, -1], [8, 0]]) {
+    c.fillStyle = '#1b120c'; c.beginPath(); c.arc(x, y, 2.3, 0, TAU); c.fill();
+    c.fillStyle = 'rgba(255,255,255,.9)'; c.beginPath(); c.arc(x - .7, y - .8, .75, 0, TAU); c.fill();
+  }
+  c.restore();
+
+  // ---------- gingham bow at the neck ----------
+  c.save(); c.translate(-1, 5.4); c.rotate(-.1); c.scale(.8, .8);
+  const bow = () => {
+    c.beginPath();
+    for (const s of [-1, 1]) {
+      c.moveTo(s * 1.2, 0); c.quadraticCurveTo(s * 4.6, -5.4, s * 8.6, -3.9); c.quadraticCurveTo(s * 10.8, 0, s * 8.6, 3.9);
+      c.quadraticCurveTo(s * 4.6, 5.4, s * 1.2, 0); c.closePath();
+    }
+  };
+  c.fillStyle = c.strokeStyle = RED_OUT; c.lineWidth = 2.2; bow(); c.fill(); c.stroke();
+  c.save(); bow(); c.clip(); c.rotate(.5); gingham(-14, -14, 14, 14, 3.6, 2, .3, .3); c.restore();
+  c.strokeStyle = 'rgba(90,0,12,.5)'; c.lineWidth = .8; c.beginPath();
+  for (const s of [-1, 1]) { c.moveTo(s * 2.2, -.8); c.quadraticCurveTo(s * 5, -2, s * 7.6, -1.6); c.moveTo(s * 2.2, .8); c.quadraticCurveTo(s * 5, 2, s * 7.6, 1.8); }
+  c.stroke();
+  c.fillStyle = '#a3111d'; c.strokeStyle = RED_OUT; c.lineWidth = 1.1; rr(c, -2.1, -2.8, 4.2, 5.6, 1.7); c.fill(); c.stroke();
+  c.fillStyle = 'rgba(255,235,220,.35)'; rr(c, -1.3, -2, 1.6, 2.4, .8); c.fill();
+  c.restore();
+
+  c.restore();
+}
+const P = { navn: 'julebamse', bestemt: 'julebamsen', meter: 'Bamsemåler', fag: 'bamsefangst', joke: 'garanteret splintfri', draw: drawJulebamse };
+
+// =============== VÆRKSTEDET ===============
+function drawWall(c) {
+  let seed = 4321; const rnd = () => (seed = seed * 16807 % 2147483647) / 2147483647;
+  const cols = ['#7e5534', '#875c39', '#76502f', '#825837'];
+  for (let x = 0, i = 0; x < W; x += 50, i++) {
+    c.fillStyle = cols[i % 4]; c.fillRect(x, 0, 50, H);
+    c.strokeStyle = 'rgba(40,20,5,.2)'; c.lineWidth = 1;
+    for (let k = 0; k < 6; k++) {
+      const gx = x + 5 + rnd() * 40, amp = 1 + rnd() * 3, ph = rnd() * 6;
+      c.beginPath(); c.moveTo(gx, 0);
+      for (let y = 0; y <= H; y += 16) c.lineTo(gx + Math.sin(y * .018 + ph) * amp, y);
+      c.stroke();
+    }
+    if (rnd() < .6) {
+      const kx = x + 12 + rnd() * 26, ky = 330 + rnd() * 200;
+      c.fillStyle = 'rgba(50,25,8,.35)'; c.beginPath(); c.ellipse(kx, ky, 4, 7, 0, 0, 7); c.fill();
+      c.strokeStyle = 'rgba(50,25,8,.25)'; c.beginPath(); c.ellipse(kx, ky, 8, 14, 0, 0, 7); c.stroke();
+    }
+    c.fillStyle = 'rgba(25,12,3,.5)'; c.fillRect(x, 0, 2, H);
+    c.fillStyle = 'rgba(255,220,170,.06)'; c.fillRect(x + 2, 0, 2, H);
+  }
+  const glow = c.createRadialGradient(W / 2, 70, 20, W / 2, 220, 430);
+  glow.addColorStop(0, 'rgba(255,200,120,.16)'); glow.addColorStop(1, 'rgba(0,0,0,.28)');
+  c.fillStyle = glow; c.fillRect(0, 0, W, H);
+
+  // udsugningsrør
+  const pg = c.createLinearGradient(6, 0, 22, 0);
+  pg.addColorStop(0, '#7d858d'); pg.addColorStop(.45, '#cfd5da'); pg.addColorStop(1, '#6f777f');
+  c.fillStyle = pg; c.fillRect(6, 92, 15, BENCH_Y - 92);
+  c.fillStyle = 'rgba(0,0,0,.28)'; for (let y = 160; y < BENCH_Y; y += 130) c.fillRect(4, y, 19, 5);
+
+  // hulplade med værktøj
+  c.fillStyle = '#cfae82'; rr(c, 28, 100, 234, 158, 6); c.fill();
+  c.strokeStyle = '#6b4423'; c.lineWidth = 3; c.stroke();
+  c.fillStyle = 'rgba(90,60,30,.4)';
+  for (let y = 112; y < 252; y += 14) for (let x = 40; x < 256; x += 14) { c.beginPath(); c.arc(x, y, 1.6, 0, 7); c.fill(); }
+  c.fillStyle = 'rgba(55,32,14,.8)';
+  c.beginPath(); c.moveTo(42, 134); c.lineTo(128, 121); c.lineTo(128, 160); c.lineTo(42, 144); c.closePath(); c.fill(); // sav
+  rr(c, 124, 116, 30, 48, 9); c.fill();
+  c.fillStyle = '#cfae82'; rr(c, 133, 127, 13, 25, 5); c.fill();
+  c.fillStyle = 'rgba(55,32,14,.8)';
+  c.fillRect(182, 118, 7, 72); rr(c, 168, 108, 36, 13, 3); c.fill(); // hammer
+  c.fillRect(222, 112, 7, 90); c.fillRect(222, 195, 32, 7); // vinkel
+  for (let i = 0; i < 4; i++) { const x = 52 + i * 22; rr(c, x - 4, 180, 8, 24, 3); c.fill(); c.fillRect(x - 2.5, 204, 5, 26 + i * 4); } // stemmejern
+
+  // vindue: vinternat
+  c.save(); c.beginPath(); c.rect(WX, WY, WW, WH); c.clip();
+  const sky = c.createLinearGradient(0, WY, 0, WY + WH);
+  sky.addColorStop(0, '#0a1430'); sky.addColorStop(1, '#2d4b7e');
+  c.fillStyle = sky; c.fillRect(WX, WY, WW, WH);
+  c.fillStyle = '#fff';
+  for (let i = 0; i < 14; i++) { c.globalAlpha = .4 + rnd() * .6; c.fillRect(WX + rnd() * WW, WY + rnd() * WH * .55, 1.2, 1.2); }
+  c.globalAlpha = 1;
+  const mg = c.createRadialGradient(WX + 68, WY + 22, 2, WX + 68, WY + 22, 24);
+  mg.addColorStop(0, 'rgba(255,245,200,.5)'); mg.addColorStop(1, 'rgba(255,245,200,0)');
+  c.fillStyle = mg; c.fillRect(WX + 40, WY, 50, 50);
+  c.fillStyle = '#fff6d6'; c.beginPath(); c.arc(WX + 68, WY + 22, 8, 0, 7); c.fill();
+  c.fillStyle = '#c9d8ee'; c.beginPath(); c.moveTo(WX, WY + 84);
+  c.quadraticCurveTo(WX + 30, WY + 70, WX + 60, WY + 82); c.quadraticCurveTo(WX + 80, WY + 76, WX + WW, WY + 80);
+  c.lineTo(WX + WW, WY + WH); c.lineTo(WX, WY + WH); c.fill();
+  const tree = (x, y, h) => {
+    c.fillStyle = '#123326'; c.beginPath(); c.moveTo(x, y - h); c.lineTo(x + h * .4, y); c.lineTo(x - h * .4, y); c.closePath(); c.fill();
+    c.fillStyle = '#eef4ff'; c.beginPath(); c.moveTo(x, y - h); c.lineTo(x + h * .15, y - h * .62); c.lineTo(x - h * .15, y - h * .62); c.closePath(); c.fill();
+  };
+  tree(WX + 14, WY + 92, 26); tree(WX + 28, WY + 96, 18);
+  c.fillStyle = '#8e2a22'; c.fillRect(WX + 52, WY + 84, 22, 14);
+  c.fillStyle = '#eef4ff'; c.beginPath(); c.moveTo(WX + 49, WY + 85); c.lineTo(WX + 63, WY + 74); c.lineTo(WX + 77, WY + 85); c.closePath(); c.fill();
+  c.fillStyle = '#ffd36b'; c.fillRect(WX + 57, WY + 88, 5, 5); c.fillRect(WX + 66, WY + 88, 5, 5);
+  c.fillStyle = '#eef4ff'; c.beginPath(); c.moveTo(WX, WY + 99);
+  c.quadraticCurveTo(WX + 45, WY + 92, WX + WW, WY + 101); c.lineTo(WX + WW, WY + WH); c.lineTo(WX, WY + WH); c.fill();
+  c.restore();
+
+  // høreværn-skilt
+  c.save(); c.translate(WX + WW / 2, 256); c.rotate(.03);
+  c.fillStyle = '#f4c430'; rr(c, -40, -18, 80, 36, 4); c.fill(); c.strokeStyle = '#222'; c.lineWidth = 2; c.stroke();
+  c.fillStyle = '#222'; c.font = '800 11px system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillText('HUSK', 0, -6); c.fillText('HØREVÆRN!', 0, 7);
+  c.restore();
+
+  // træskilt
+  c.save(); c.translate(W / 2 + 6, 304); c.rotate(-.015);
+  const pl = c.createLinearGradient(0, -18, 0, 18);
+  pl.addColorStop(0, '#ecd09e'); pl.addColorStop(1, '#d4b07a');
+  c.fillStyle = pl; rr(c, -122, -17, 244, 34, 5); c.fill(); c.strokeStyle = '#7f5127'; c.lineWidth = 2; c.stroke();
+  c.fillStyle = '#5a3a1c'; for (const x of [-113, 113]) { c.beginPath(); c.arc(x, 0, 2.2, 0, 7); c.fill(); }
+  c.fillStyle = '#4a2a10'; c.font = '800 13px system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  c.fillText('MÅL TO GANGE – SAV ÉN GANG', 0, 1);
+  c.restore();
+}
+
+// sne i vinduet + vinduesramme (tegnes hver frame)
+const flakes = Array.from({ length: 28 }, () => ({ x: WX + Math.random() * WW, y: WY + Math.random() * WH, r: rand(.8, 2), v: rand(12, 28), p: rand(0, 6) }));
+function drawSnow(c) {
+  c.save(); c.beginPath(); c.rect(WX, WY, WW, WH); c.clip();
+  c.fillStyle = 'rgba(255,255,255,.9)';
+  for (const f of flakes) { c.beginPath(); c.arc(f.x, f.y, f.r, 0, 7); c.fill(); }
+  c.restore();
+}
+function drawWindowFrame(c) {
+  c.fillStyle = '#5b3a1e';
+  c.fillRect(WX - 5, WY - 5, WW + 10, 5); c.fillRect(WX - 5, WY + WH, WW + 10, 5);
+  c.fillRect(WX - 5, WY, 5, WH); c.fillRect(WX + WW, WY, 5, WH);
+  c.fillStyle = '#6b4423'; c.fillRect(WX + WW / 2 - 2, WY, 4, WH); c.fillRect(WX, WY + WH / 2 - 2, WW, 4);
+  c.fillStyle = '#eef4ff';
+  for (const [x, y] of [[WX, WY + WH / 2 - 2], [WX + WW / 2 + 2, WY + WH / 2 - 2], [WX, WY + WH], [WX + WW / 2 + 2, WY + WH]]) {
+    c.beginPath(); c.moveTo(x, y); c.quadraticCurveTo(x + 6, y - 6, x + WW / 4, y - 3); c.quadraticCurveTo(x + WW / 2 - 8, y - 5, x + WW / 2 - 2, y); c.closePath(); c.fill();
+  }
+  c.fillStyle = '#9b6a3a'; c.fillRect(WX - 10, WY + WH + 4, WW + 20, 7);
+  c.fillStyle = '#b98654'; c.fillRect(WX - 10, WY + WH + 4, WW + 20, 2);
+}
+
+// julelyskæde (tegnes hver frame, så den kan blinke)
+const BULBS = [[255, 82, 82], [255, 214, 80], [86, 214, 128], [90, 182, 255], [255, 140, 235]];
+const swagY = x => 68 + Math.sin((x % 100) / 100 * Math.PI) * 14;
+let clock = 0;
+function drawLights(c) {
+  c.strokeStyle = '#173222'; c.lineWidth = 1.6; c.beginPath();
+  for (let x = 0; x <= W; x += 5) { const y = swagY(x); if (x === 0) c.moveTo(x, y); else c.lineTo(x, y); }
+  c.stroke();
+  c.fillStyle = '#3a2614'; for (let x = 0; x <= W; x += 100) { c.beginPath(); c.arc(x, 68, 2.5, 0, 7); c.fill(); }
+  for (let i = 0; i < 20; i++) {
+    const x = 10 + i * 20, y = swagY(x) + 1, k = i % BULBS.length, [r, g, b] = BULBS[k];
+    const on = .5 + .5 * Math.sin(clock * 2.1 + i * 2.3);
+    c.globalAlpha = .3 + .6 * on; c.drawImage(GLOW[k], x - 15, y + 7 - 15, 30, 30);
+    c.globalAlpha = 1; c.fillStyle = '#2b4d30'; c.fillRect(x - 2, y - 1, 4, 4);
+    c.globalAlpha = .65 + .35 * on; c.fillStyle = `rgb(${r},${g},${b})`;
+    c.beginPath(); c.ellipse(x, y + 7, 3.2, 4.6, 0, 0, 7); c.fill();
+    c.globalAlpha = 1; c.fillStyle = 'rgba(255,255,255,.7)'; c.beginPath(); c.arc(x - 1, y + 5.5, 1, 0, 7); c.fill();
+  }
+}
+
+function drawBench(c) {
+  const g = c.createLinearGradient(0, BENCH_Y, 0, H);
+  g.addColorStop(0, '#dcb57c'); g.addColorStop(.3, '#c99d63'); g.addColorStop(1, '#9d703f');
+  c.fillStyle = g; c.fillRect(0, BENCH_Y, W, H - BENCH_Y);
+  c.fillStyle = '#f0d4a3'; c.fillRect(0, BENCH_Y, W, 3);
+  c.fillStyle = 'rgba(80,45,15,.5)'; c.fillRect(0, BENCH_Y + 16, W, 2);
+  c.strokeStyle = 'rgba(110,65,25,.22)'; c.lineWidth = 1;
+  for (let x = 13; x < W; x += 26) { c.beginPath(); c.moveTo(x, BENCH_Y + 18); c.lineTo(x, H); c.stroke(); }
+  c.fillStyle = '#5e3b1d'; for (let x = 30; x < W; x += 70) c.fillRect(x, BENCH_Y + 6, 8, 6);
+  c.fillStyle = 'rgba(70,35,10,.5)'; c.font = '800 13px system-ui,sans-serif'; c.textAlign = 'center'; c.textBaseline = 'middle';
+  const nm = CONFIG.herName || store.name; // hendes navn brændt ind i høvlebænken, når det kendes
+  c.fillText(nm ? (possessive(nm) + ' værksted').toUpperCase() : 'VÆRKSTEDET', W / 2, BENCH_Y + 40);
+}
+
+function drawCrate(c, x, bounce, pile) {
+  const w = CRATE_W + bounce * 8, h = CRATE_H - bounce * 7, top = BENCH_Y - h, l = x - w / 2; // squash-and-stretch ved fangst
+  c.fillStyle = 'rgba(0,0,0,.3)'; c.beginPath(); c.ellipse(x, BENCH_Y + 2, w / 2 + 4, 5, 0, 0, 7); c.fill();
+  c.fillStyle = '#7a4a22'; c.fillRect(l + 3, top, w - 6, 9);
+  c.fillStyle = '#3e2410'; c.fillRect(l + 7, top + 3, w - 14, 8);
+  if (pile.length) { // det fangede stikker op af kassen
+    c.save(); c.beginPath(); c.rect(l + 5, top - 40, w - 10, 48); c.clip();
+    const lift = Math.min(10, pile.length * 1.2), sc = .55;
+    for (const p of pile) {
+      const T = TYPES[p.type];
+      c.save(); c.translate(x + p.dx, top + 10 - lift); c.rotate(p.rot);
+      c.drawImage(SPR[p.type], -T.box * sc / 2, -T.box * sc / 2, T.box * sc, T.box * sc);
+      c.restore();
+    }
+    c.restore();
+  }
+  const g = c.createLinearGradient(0, top + 6, 0, BENCH_Y);
+  g.addColorStop(0, '#efc27f'); g.addColorStop(1, '#d29a55');
+  c.fillStyle = g; c.fillRect(l, top + 7, w, h - 7);
+  c.fillStyle = 'rgba(110,65,25,.45)'; c.fillRect(l, top + 7 + (h - 7) / 2, w, 1.5);
+  c.fillStyle = '#b07a3e'; // sinkesamlinger
+  const hh = (h - 7) / 3;
+  for (let i = 0; i < 3; i++) {
+    const y0 = top + 7 + i * hh + 2, y1 = y0 + hh - 4;
+    c.beginPath(); c.moveTo(l, y0 + 2); c.lineTo(l + 9, y0); c.lineTo(l + 9, y1); c.lineTo(l, y1 - 2); c.closePath(); c.fill();
+    c.beginPath(); c.moveTo(l + w, y0 + 2); c.lineTo(l + w - 9, y0); c.lineTo(l + w - 9, y1); c.lineTo(l + w, y1 - 2); c.closePath(); c.fill();
+  }
+  heart(c, x, top + 7 + hh * .75, .62, 'rgba(110,50,20,.55)');
+  c.strokeStyle = '#7a4a22'; c.lineWidth = 2; c.strokeRect(l, top + 7, w, h - 7);
+}
+
+// =============== SPRITES (forhåndstegnet med skygge) ===============
+const SPR = {}, GLOW = [];
+function makeSprite(size, fn, shadow) {
+  const px = Math.ceil(size * pr);
+  const tmp = document.createElement('canvas'); tmp.width = tmp.height = px;
+  const t = tmp.getContext('2d'); t.setTransform(pr, 0, 0, pr, px / 2, px / 2); fn(t);
+  if (!shadow) return tmp;
+  const out = document.createElement('canvas'); out.width = out.height = px;
+  const o = out.getContext('2d');
+  o.shadowColor = 'rgba(25,12,0,.55)'; o.shadowBlur = 5 * pr; o.shadowOffsetY = 3 * pr;
+  o.drawImage(tmp, 0, 0);
+  return out;
+}
+function buildSprites() {
+  for (const k in TYPES) SPR[k] = makeSprite(TYPES[k].box, TYPES[k].draw, true);
+  SPR.prize = makeSprite(130, P.draw, false);
+  BULBS.forEach(([r, g, b], i) => {
+    GLOW[i] = makeSprite(30, c => {
+      const gr = c.createRadialGradient(0, 0, 0, 0, 0, 15);
+      gr.addColorStop(0, `rgba(${r},${g},${b},.9)`); gr.addColorStop(1, `rgba(${r},${g},${b},0)`);
+      c.fillStyle = gr; c.fillRect(-15, -15, 30, 30);
+    }, false);
+  });
+}
+
+// =============== SPILLET ===============
+let state = 'menu', g = null;
+const player = { x: W / 2, tx: W / 2, bounce: 0 };
+const keys = { l: false, r: false };
+let fx = [], texts = [], confettiT = 0, confettiAcc = 0;
+
+// Sværhedsgraden styres af s (1 = svær, 0 = let). Første forsøg er svært; efter hvert mislykket forsøg
+// falder s – mere, jo længere hun var fra målet. Antal liv og mål er uændret, så hun mærker kun, at hun "er blevet bedre".
+function difficulty(s) {
+  return {
+    iv0: lerp(1.1, .9, s), iv1: lerp(.9, .4, s),   // sekunder mellem nye ting: i starten → tæt på målet
+    v0: lerp(120, 140, s), v1: lerp(170, 320, s),  // faldhastighed: i starten → tæt på målet
+    reach: lerp(220, 700, s),                      // hvor langt fra hinanden to ting, der lander samtidig, må være
+    nail: lerp(.4, 1, s),                          // hvor mange søm
+    half: lerp(62, 53, s), late: lerp(44, 24, s),  // hvor tilgivende kassen er over for gode ting
+  };
+}
+// Jo tættere hun er på målet, jo hurtigere går det.
+const progress = () => Math.pow(Math.min(1, g.score / CONFIG.target), 1.3);
+
+function newRound() {
+  load();
+  store.attempts++; save();
+  g = { t: 0, score: 0, hearts: CONFIG.lives, items: [], pile: [], spawnT: .8, shake: 0, hurt: 0, lostAt: -9,
+        caught: 0, streak: 0, bestStreak: 0, attempt: store.attempts, fun: store.won, D: difficulty(store.skill),
+        lastCause: '', half: false, near: false, recordShown: false, record: false, reason: '' };
+  player.x = player.tx = W / 2;
+  keys.l = keys.r = false;
+  confettiT = 0;
+  state = 'play';
+  hideOverlay();
+  guardBack();
+  floatText(W / 2, 240, `Forsøg ${g.attempt}`, '#fff', 28, 1.6);
+  startTune();
+}
+// "Fair" placering: to gode ting, der lander tæt på samme tid, skal begge kunne nås,
+// og et søm må aldrig lande oven i en god ting. Så er hver tabt ting spillerens egen skyld.
+function fairX(bad, vy) {
+  const arrive = (CATCH_Y + 40) / vy; // sekunder til den nye ting når kassen
+  for (let tries = 0; tries < 12; tries++) {
+    const x = rand(30, W - 30);
+    let ok = true;
+    for (const o of g.items) {
+      if (o.passed) continue;
+      const oBad = !!TYPES[o.type].bad, dt = Math.abs(arrive - (CATCH_Y - o.y) / o.vy), dx = Math.abs(x - o.x);
+      if (!bad && !oBad ? dx > 90 + g.D.reach * dt : bad !== oBad && dt < .35 && dx < 75) { ok = false; break; }
+    }
+    if (ok) return x;
+  }
+  return null; // ingen fair plads lige nu – prøv igen om lidt
+}
+function spawn(q) {
+  const D = g.D; let total = 0; const pool = [];
+  for (const k in TYPES) {
+    const T = TYPES[k], wgt = T.bad ? (g.t < 5 ? 0 : (T.weight + q * 10) * D.nail) : T.weight; // ingen søm de første 5 sek.
+    pool.push([k, wgt]); total += wgt;
+  }
+  let r = Math.random() * total, key = 'plank';
+  for (const [k, wgt] of pool) { r -= wgt; if (r <= 0) { key = k; break; } }
+  const T = TYPES[key];
+  const vy = lerp(D.v0, D.v1, q) * rand(.85, 1.15) * (T.gold ? 1.15 : 1) * FALL;
+  const x = fairX(!!T.bad, vy);
+  if (x === null) return false;
+  g.items.push({ type: key, x, y: -40, vy, rot: T.bad ? 0 : rand(-.3, .3), // søm falder altid med spidsen nedad
+    vr: T.bad ? 0 : key === 'plank' ? rand(-1.6, 1.6) : rand(-.7, .7) });
+  return true;
+}
+function burst(x, y, n, colors, spd, size) {
+  for (let i = 0; i < n; i++) fx.push({ x, y, vx: rand(-1, 1) * spd, vy: -rand(.3, 1) * spd, life: 0, max: rand(.4, .9),
+    color: pick(colors), size: size * rand(.6, 1.4), grav: 500 });
+}
+function floatText(x, y, text, color, size = 18, dur = 1) { texts.push({ x, y, text, color, size, life: 0, max: dur }); }
+
+const LADDER = [0, 2, 4, 7, 9, 12, 14, 16]; // tonerne stiger, når hun fanger mange i træk
+function onCatch(it) {
+  const T = TYPES[it.type];
+  if (T.bad) {
+    g.streak = 0;
+    burst(it.x, CATCH_Y, 16, ['#ffd27a', '#ff7b5c', '#d0d4d8'], 230, 2.5);
+    floatText(it.x, CATCH_Y - 26, 'Av! Søm i træet!', '#ff6a5a', 17);
+    beep(150, .3, 'sawtooth', .09, .5);
+    loseHeart('nail');
+    return;
+  }
+  g.score += T.pts; g.caught++; g.streak++; g.bestStreak = Math.max(g.bestStreak, g.streak);
+  player.bounce = 1;
+  g.pile.push({ type: it.type, dx: rand(-30, 30), rot: rand(-.6, .6) });
+  if (g.pile.length > 9) g.pile.shift();
+  burst(it.x, CATCH_Y, T.gold ? 22 : 12, T.gold ? ['#ffe27a', '#fff3b0', '#f4c430'] : ['#ffffff', '#e9c58f', '#d9a35f', '#f6e1b8'], T.gold ? 200 : 130, 3);
+  floatText(it.x, CATCH_Y - 26, (T.gold ? 'Gylden høvl! +' : '+') + T.pts, T.gold ? '#ffe27a' : '#fff', T.gold ? 20 : 18);
+  if (T.gold) { beep(660, .1, 'triangle', .1); beep(990, .18, 'triangle', .1, 0, .09); }
+  else beep(523 * Math.pow(2, LADDER[Math.min(g.streak, LADDER.length) - 1] / 12), .1, 'triangle', .08, 1.4);
+  if (g.streak % 10 === 0) {
+    floatText(clamp(player.x, 70, W - 70), CATCH_Y - 64, `${g.streak} i træk!`, '#ffd84d', 21, 1.3);
+    beep(1175, .15, 'sine', .07, 0, .08);
+  }
+  if (!g.fun) {
+    const left = CONFIG.target - g.score;
+    if (left <= 0) { endRound('win'); return; }
+    if (!g.half && g.score >= CONFIG.target / 2) { g.half = true; floatText(W / 2, 300, `Halvvejs til ${P.bestemt}!`, '#ffd84d', 22, 1.8); }
+    if (!g.near && left <= 300) { g.near = true; floatText(W / 2, 334, `Kun ${left} point til ${P.bestemt}!`, '#ffd84d', 21, 1.8); }
+  }
+  if (!g.recordShown && g.attempt > 1 && store.best > 0 && g.score > store.best) {
+    g.recordShown = true; floatText(W / 2, 368, 'Ny rekord!', '#ffffff', 20, 1.5);
+  }
+}
+function onMiss(it) { // en god ting røg på gulvet
+  g.streak = 0;
+  floatText(clamp(it.x, 40, W - 40), CATCH_Y - 18, 'Tabt!', '#ffb36b', 18);
+  beep(120, .22, 'square', .05, .6);
+  loseHeart('miss');
+}
+function loseHeart(cause) {
+  g.hearts--; g.lostAt = clock; g.lastCause = cause; g.hurt = 1;
+  g.shake = Math.max(g.shake, cause === 'nail' ? .35 : .2);
+  burst(W - 20 - g.hearts * 24, 25, 10, ['#e8475a', '#ff8fa3'], 110, 3); // hjertet i toppen går i stykker
+  try { if (navigator.vibrate) navigator.vibrate(cause === 'nail' ? 120 : 60); } catch (e) {}
+  if (g.hearts === 1 && CONFIG.lives > 1) floatText(W / 2, 300, 'Sidste liv!', '#ff8a7a', 22, 1.4);
+  if (g.hearts <= 0) endRound('lives');
+}
+
+function endRound(reason) {
+  state = 'end';
+  for (const it of g.items) burst(it.x, it.y, 5, ['#e9c58f', '#f6e1b8'], 80, 2);
+  g.items = [];
+  g.reason = reason;
+  load();
+  g.record = g.attempt > 1 && g.score > store.best;
+  store.best = Math.max(store.best, g.score);
+  let justWon = false;
+  if (reason === 'win' && !store.won) {
+    justWon = true; store.won = true; store.wonScore = g.score; store.wonAttempt = g.attempt;
+    store.wonDate = new Date().toLocaleDateString('da-DK', { day: 'numeric', month: 'long', year: 'numeric' });
+  } else if (reason === 'lives' && !store.won) {
+    // usynlig hjælp: næste forsøg bliver lidt lettere – mere, jo længere hun var fra målet
+    store.skill = clamp(store.skill * Math.max(.25, Math.pow(Math.min(1, g.score / CONFIG.target), 1.3)) * .9, 0, 1);
+  }
+  save();
+  if (justWon) {
+    floatText(W / 2, 270, `${cap(P.bestemt)} er din!`, '#ffe27a', 30, 2.2);
+    for (let i = 0; i < 30; i++) fx.push({ x: W / 2, y: 280, vx: rand(-170, 170), vy: rand(-280, -60), life: 0, max: rand(1, 1.6),
+      color: pick(['#e8475a', '#ff8fa3', '#ffd84d']), size: rand(5, 8), grav: 300, kind: 'heart' });
+    winTune();
+    setTimeout(() => { confettiT = 4; showWin(); }, 1500);
+  } else { endTune(); setTimeout(showEnd, 750); }
+}
+
+function pauseGame() {
+  if (state !== 'play') return;
+  state = 'pause'; keys.l = keys.r = false;
+  show(`<div class="card">${muteBtn()}
+    <h2>Kaffepause ☕</h2>
+    <p>Spillet er sat på pause.</p>
+    <button data-a="resume">Fortsæt</button>
+  </div>`);
+}
+
+// =============== LYD ===============
+let actx = null;
+function audio() {
+  if (store.muted) return null;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    if (actx.state !== 'running') { const r = actx.resume(); if (r && r.catch) r.catch(() => {}); } // iPhone: også 'interrupted'
+    return actx;
+  } catch (e) { return null; }
+}
+function beep(freq, dur, type = 'triangle', vol = .1, slide = 0, delay = 0) {
+  const a = audio(); if (!a) return;
+  try {
+    const t = a.currentTime + delay, o = a.createOscillator(), gn = a.createGain();
+    o.type = type; o.frequency.setValueAtTime(freq, t);
+    if (slide) o.frequency.exponentialRampToValueAtTime(freq * slide, t + dur);
+    gn.gain.setValueAtTime(.0001, t); gn.gain.exponentialRampToValueAtTime(vol, t + .01);
+    gn.gain.exponentialRampToValueAtTime(.0001, t + dur);
+    o.connect(gn); gn.connect(a.destination); o.start(t); o.stop(t + dur + .02);
+  } catch (e) {}
+}
+const winTune = () => [523, 659, 784, 1047, 784, 1047].forEach((f, i) => beep(f, .22, 'triangle', .1, 0, i * .14));
+const startTune = () => [392, 523, 659].forEach((f, i) => beep(f, .12, 'triangle', .08, 0, i * .09));
+const endTune = () => [659, 523, 392].forEach((f, i) => beep(f, i === 2 ? .3 : .14, 'triangle', .09, 0, i * .14));
+
+// =============== SKÆRME ===============
+const muteBtn = () => `<button class="mute" data-a="mute" aria-label="Lyd til/fra">${store.muted ? '🔇' : '🔊'}</button>`;
+const certBtn = '<button class="alt" data-a="cert">Vis svendebrev 📜</button>';
+function barHTML(v, label) {
+  const f = Math.min(1, v / CONFIG.target);
+  return `<div class="bar"><i style="width:${Math.max(4, f * 100).toFixed(1)}%"></i></div><div class="small">${label}</div>`;
+}
+let shownAt = 0;
+function show(html) { texts = []; ov.innerHTML = html; ov.classList.remove('hide'); ov.scrollTop = 0; shownAt = performance.now(); drawCanvases(); }
+function hideOverlay() { ov.classList.add('hide'); ov.innerHTML = ''; }
+
+function showStart() {
+  state = 'menu';
+  const name = esc(CONFIG.herName || store.name || 'maskinsnedker');
+  const back = store.attempts > 0;
+  const touch = !!(window.matchMedia && matchMedia('(pointer: coarse)').matches);
+  const rows = Object.entries(TYPES).filter(([, T]) => !T.bad).map(([k, T]) =>
+    `<div><canvas data-item="${k}"></canvas><span><b>${T.name}</b>${T.pts} point</span></div>`).join('');
+  const rules = `
+    <p>Fang materialer og værktøj i kassen. Får du <b>${CONFIG.target} point</b> i ét forsøg, har du bestået svendeprøven og vinder en rigtig ${P.navn} – ${P.joke} 🎄</p>
+    <div class="legend">${rows}
+      <div class="bad"><canvas data-item="nail"></canvas><span><b>Søm – undgå dem!</b>De giver hak i høvlknivene.</span></div>
+    </div>
+    <p class="small">Du har ${CONFIG.lives} liv ❤️ – et søm i kassen eller en ting på gulvet koster ét. Jo tættere du kommer på målet, jo hurtigere går det!<br>${touch ? 'Træk med fingeren – hvor som helst på skærmen.' : 'Styr kassen med musen eller ← →'}</p>`;
+  show(`<div class="card">${muteBtn()}
+    ${TEST ? '<div class="small" style="color:#b3262c"><b>TESTTILSTAND</b> – lavt mål, intet gemmes</div>' : ''}
+    <div class="kicker">${back ? `Hej igen, ${name}!` : `Hej ${name}!`} 👋</div>
+    <h1>Jagten på ${P.bestemt}</h1>
+    <canvas class="prize-cv" data-prize="1"></canvas>
+    ${store.won ? `<p><b>Du har vundet ${P.bestemt}! 🎉</b><br>Du kan stadig spille for sjov og jagte din rekord på ${store.best} point.</p>` : rules}
+    ${back && !store.won ? barHTML(store.best, `Din rekord: <b>${store.best} / ${CONFIG.target}</b> point · ${store.attempts} forsøg`) : ''}
+    ${store.won ? certBtn : ''}
+    <button data-a="start">Stempl ind ⏱</button>
+    ${CONFIG.fromName ? `<div class="small" style="margin-top:.6em">Lavet til dig af ${esc(CONFIG.fromName)}</div>` : ''}
+  </div>`);
+}
+function showEnd() {
+  const f = Math.min(1, g.score / CONFIG.target);
+  const why = g.lastCause === 'nail' ? 'Søm i træet – nu skal høvlknivene skiftes.' : 'Der røg for meget på gulvet – mester har sendt dig hjem.';
+  let msg;
+  if (g.fun) msg = g.record ? 'Ny rekord – flot! 🏆' : `${cap(P.bestemt)} er allerede din – nu er det bare for æren! 🏆`;
+  else if (f >= .85) msg = `Så tæt på! ${cap(P.bestemt)} kan næsten mærke krammet.`;
+  else if (f >= .5) msg = 'Godt gået – du er over halvvejs! Næste gang sidder den.';
+  else if (f >= .25) msg = 'Du er ved at få styr på det – prøv igen!';
+  else msg = 'Det er svært i starten – prøv igen, du bliver hurtigt bedre!';
+  show(`<div class="card">${muteBtn()}
+    <div class="kicker">Forsøg ${g.attempt}</div>
+    <h2>Tidlig fyraften!</h2>
+    <p class="small">${why}</p>
+    <div class="big">${g.score}</div>
+    <div class="small">af ${CONFIG.target} point · ${g.caught} ting fanget · flest i træk: ${g.bestStreak}${g.record ? ' · <b>ny rekord!</b>' : ''}</div>
+    ${barHTML(g.score, `Din rekord: <b>${store.best}</b> point`)}
+    <p>${msg}</p>
+    ${store.won ? certBtn : ''}
+    <button data-a="start">Prøv igen ⏱</button>
+  </div>`);
+}
+function showWin() {
+  state = 'win';
+  const from = CONFIG.fromName ? esc(CONFIG.fromName) : '';
+  const nameHTML = CONFIG.herName ? `<div class="cert-name">${esc(CONFIG.herName)}</div>`
+    : `<input class="cert-name" id="nm" maxlength="28" placeholder="skriv dit navn her" value="${esc(store.name)}" autocomplete="off">`;
+  const score = store.wonScore || CONFIG.target, n = store.wonAttempt || store.attempts || 1;
+  show(`<div class="card">
+    <div class="cert">
+      <div class="cert-top">SVENDEBREV</div>
+      <div class="cert-sub">i faget ${P.fag}</div>
+      <p>Hermed bekræftes det, at</p>
+      ${nameHTML}
+      <p>har bestået svendeprøven med ros (<b>${score}</b> point i ${n}. forsøg) og har dermed vundet:</p>
+      <canvas class="prize-cv" data-prize="1"></canvas>
+      <div class="prize">Én (1) ${P.navn}</div>
+      <div class="small">(${P.joke})</div>
+      ${CONFIG.message ? `<p class="msg">»${esc(CONFIG.message)}«</p>` : ''}
+      <p class="small">Indløses hos ${from || 'afsenderen'}<br>${esc(store.wonDate || '')}</p>
+      <div class="seal">★</div>
+    </div>
+    <p>Tag et screenshot og send det til ${from || 'mig'} 😉</p>
+    <button class="alt" data-a="start">Spil videre for sjov</button>
+  </div>`);
+}
+function drawCanvases() {
+  const dpr = window.devicePixelRatio || 1;
+  ov.querySelectorAll('canvas[data-item], canvas[data-prize]').forEach(cn => {
+    const px = Math.max(40, Math.round(cn.offsetWidth * dpr));
+    cn.width = cn.height = px;
+    const c = cn.getContext('2d');
+    if (cn.dataset.item) { const T = TYPES[cn.dataset.item], sc = px / T.box; c.setTransform(sc, 0, 0, sc, px / 2, px / 2); T.draw(c); }
+    else { const sc = px / 130; c.setTransform(sc, 0, 0, sc, px / 2, px / 2); P.draw(c); }
+  });
+}
+ov.addEventListener('click', e => {
+  const b = e.target.closest('button'); if (!b) return;
+  const a = b.dataset.a;
+  if (a !== 'mute' && performance.now() - shownAt < 450) return; // et tilfældigt tryk må ikke springe kortet over
+  audio(); // låser lyden op på iPhone (skal ske i et tryk)
+  if (a === 'start') newRound();
+  else if (a === 'resume') { state = 'play'; hideOverlay(); }
+  else if (a === 'cert') showWin();
+  else if (a === 'mute') { load(); store.muted = !store.muted; save(); b.textContent = store.muted ? '🔇' : '🔊'; beep(660, .08); }
+});
+ov.addEventListener('input', e => { // hun skriver selv sit navn på svendebrevet
+  if (e.target.id !== 'nm') return;
+  load(); store.name = e.target.value.trim().slice(0, 28); save();
+});
+
+// =============== STYRING ===============
+function setTarget(e) {
+  if (state !== 'play') return;
+  const r = cv.getBoundingClientRect();
+  player.tx = (e.clientX - r.left) / r.width * W;
+}
+cv.addEventListener('pointermove', setTarget);
+cv.addEventListener('pointerdown', e => { audio(); setTarget(e); try { cv.setPointerCapture(e.pointerId); } catch (_) {} });
+if (!window.PointerEvent) { // meget gamle iPhones (iOS 12 og ældre) har ikke pointer-events
+  const t = e => { if (e.touches[0]) setTarget(e.touches[0]); };
+  cv.addEventListener('touchstart', t, { passive: true }); cv.addEventListener('touchmove', t, { passive: true });
+}
+document.addEventListener('touchmove', e => { if (state === 'play') e.preventDefault(); }, { passive: false });
+document.addEventListener('gesturestart', e => e.preventDefault()); // ingen pinch-zoom på iPhone
+// "Tilbage"-swipe midt i et forsøg sætter spillet på pause i stedet for at lukke siden
+function guardBack() { try { if (!history.state || !history.state.jb) history.pushState({ jb: 1 }, ''); } catch (e) {} }
+addEventListener('popstate', () => { if (state === 'play' || state === 'pause') { pauseGame(); guardBack(); } });
+addEventListener('keydown', e => {
+  if (e.target && e.target.tagName === 'INPUT') { if (e.key === 'Enter') e.target.blur(); return; } // navnefeltet
+  const k = e.key;
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') keys.l = true;
+  if (k === 'ArrowRight' || k === 'd' || k === 'D') keys.r = true;
+  if ((k === 'Escape' || k === 'p' || k === 'P') && state === 'play') pauseGame();
+  if ((k === 'Enter' || k === ' ') && !ov.classList.contains('hide')) {
+    const b = ov.querySelector('button[data-a="start"], button[data-a="resume"]');
+    if (b) { e.preventDefault(); b.click(); }
+  }
+});
+addEventListener('keyup', e => {
+  const k = e.key;
+  if (k === 'ArrowLeft' || k === 'a' || k === 'A') keys.l = false;
+  if (k === 'ArrowRight' || k === 'd' || k === 'D') keys.r = false;
+});
+document.addEventListener('visibilitychange', () => { if (document.hidden) pauseGame(); });
+addEventListener('blur', pauseGame);
+
+// =============== OPDATERING ===============
+function update(dt) {
+  clock += dt;
+  for (const f of flakes) {
+    f.y += f.v * dt; f.x += Math.sin(clock * 1.3 + f.p) * 8 * dt;
+    if (f.y > WY + WH + 3) { f.y = WY - 3; f.x = WX + Math.random() * WW; }
+  }
+  if (state === 'play') stepGame(dt);
+  if (g) { g.shake = Math.max(0, g.shake - dt); g.hurt = Math.max(0, g.hurt - dt * 1.4); }
+  player.bounce = Math.max(0, player.bounce - dt * 6);
+  if (confettiT > 0) {
+    confettiT -= dt; confettiAcc += dt * 90; // ~90 stykker konfetti i sekundet, uanset skærmens billedfrekvens
+    for (; confettiAcc >= 1; confettiAcc--) {
+      const r = Math.random();
+      fx.push({ x: rand(0, W), y: -10, vx: rand(-30, 30), vy: rand(60, 150), life: 0, max: 4.5, grav: 15,
+        color: pick(['#e8475a', '#f4c430', '#2e7d4f', '#ffffff', '#e9c58f', '#c8352f']), size: rand(3, 6),
+        kind: r < .3 ? 'heart' : r < .5 ? 'snow' : 'chip', spin: rand(0, 6) });
+    }
+  }
+  for (const f of fx) { f.life += dt; f.vy += f.grav * dt; f.x += f.vx * dt; f.y += f.vy * dt; if (f.spin !== undefined) f.spin += dt * 5; }
+  fx = fx.filter(f => f.life < f.max && f.y < H + 20);
+  if (fx.length > 800) fx.splice(0, fx.length - 800);
+  for (const t of texts) { t.life += dt; t.y -= 34 * dt; }
+  texts = texts.filter(t => t.life < t.max);
+}
+function stepGame(dt) {
+  g.t += dt;
+  const q = progress();
+  g.spawnT -= dt;
+  if (g.spawnT <= 0) g.spawnT = spawn(q) ? lerp(g.D.iv0, g.D.iv1, q) * rand(.75, 1.25) : .12;
+
+  const kd = (keys.r ? 1 : 0) - (keys.l ? 1 : 0);
+  if (kd) { player.x += kd * 560 * dt; player.tx = player.x; }
+  else player.x += (player.tx - player.x) * Math.min(1, dt * 20);
+  player.x = clamp(player.x, CRATE_W / 2, W - CRATE_W / 2);
+
+  for (const it of g.items) {
+    it.y += it.vy * dt; it.rot += it.vr * dt;
+    if (!it.passed && !it.dead && it.y >= CATCH_Y) {
+      const T = TYPES[it.type], dx = Math.abs(it.x - player.x);
+      if (T.bad) { it.passed = true; if (dx < CRATE_W / 2 - 8) { it.dead = true; onCatch(it); } } // søm tæller kun i selve åbningen
+      else if (dx < g.D.half) { it.dead = true; onCatch(it); }                                    // gode ting: lidt tilgivende
+      else if (it.y >= CATCH_Y + g.D.late * FALL) { it.passed = true; onMiss(it); }
+      if (state !== 'play') return; // vundet eller ude af liv
+    }
+    if (it.passed && !it.thud && !TYPES[it.type].bad && it.y > BENCH_Y) { // klonk på gulvet
+      it.thud = true; burst(it.x, BENCH_Y, 7, ['#e9c58f', '#c9a070', '#f6e1b8'], 90, 2.2);
+    }
+    if (it.y > H + 60) it.dead = true;
+  }
+  g.items = g.items.filter(i => !i.dead);
+}
+
+// =============== TEGNING ===============
+function drawItem(c, it) {
+  const T = TYPES[it.type];
+  if (T.bad) { // tydelig rød ring: rød betyder altid fare
+    c.fillStyle = 'rgba(235,45,45,.32)'; c.beginPath(); c.arc(it.x, it.y, 19 + Math.sin(clock * 8 + it.x) * 2.5, 0, 7); c.fill();
+    c.lineWidth = 2; c.strokeStyle = 'rgba(255,90,60,.9)'; c.stroke();
+  }
+  if (T.gold) { c.fillStyle = 'rgba(255,215,90,.28)'; c.beginPath(); c.arc(it.x, it.y, 30 + Math.sin(clock * 6) * 3, 0, 7); c.fill(); }
+  c.save(); c.translate(it.x, it.y); c.rotate(it.rot);
+  c.drawImage(SPR[it.type], -T.box / 2, -T.box / 2, T.box, T.box);
+  if (T.gold) {
+    const sx = Math.sin(clock * 3) * 18, s = 3 + Math.sin(clock * 9) * 1.5;
+    c.fillStyle = '#fff'; c.beginPath();
+    c.moveTo(sx, 4 - s * 2); c.lineTo(sx + s * .5, 4); c.lineTo(sx, 4 + s * 2); c.lineTo(sx - s * .5, 4); c.closePath(); c.fill();
+  }
+  c.restore();
+}
+function render() {
+  ctx.setTransform(pr, 0, 0, pr, 0, 0);
+  ctx.drawImage(bg, 0, 0, W, H);
+  drawSnow(ctx); drawWindowFrame(ctx); drawLights(ctx);
+  const playing = state === 'play' || state === 'pause';
+  ctx.save();
+  if (g && g.shake > 0 && (state === 'play' || state === 'end')) ctx.translate(rand(-6, 6) * g.shake * 2, rand(-6, 6) * g.shake * 2);
+  if (g && playing) for (const it of g.items) if (!it.passed) drawItem(ctx, it); // på vej ned: bag kassen
+  drawCrate(ctx, player.x, player.bounce, g ? g.pile : []);
+  if (g && playing) for (const it of g.items) if (it.passed) drawItem(ctx, it);  // forbi kassen: foran den
+  drawBench(ctx);
+  ctx.restore();
+  if (g && (playing || (state === 'end' && ov.classList.contains('hide')))) { drawHurt(ctx); drawHUD(ctx); }
+
+  // partikler, konfetti og flydende tekst på det øverste lag (også over svendebrevet)
+  const c = fctx;
+  c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, fxc.width, fxc.height);
+  if (!fx.length && !texts.length) return;
+  c.setTransform(pr, 0, 0, pr, 0, 0);
+  for (const f of fx) {
+    c.globalAlpha = clamp((f.max - f.life) / (f.max * .35), 0, 1);
+    if (f.kind === 'heart') heart(c, f.x, f.y, f.size / 6, f.color);
+    else if (f.kind === 'snow') { c.fillStyle = '#fff'; c.beginPath(); c.arc(f.x, f.y, f.size / 2, 0, 7); c.fill(); }
+    else {
+      const hh = f.kind === 'chip' ? f.size * (Math.abs(Math.cos(f.spin)) + .2) : f.size;
+      c.fillStyle = f.color; c.fillRect(f.x - f.size / 2, f.y - hh / 2, f.size, hh);
+    }
+  }
+  c.globalAlpha = 1;
+  c.textAlign = 'center'; c.textBaseline = 'middle'; c.lineJoin = 'round';
+  for (const t of texts) {
+    c.globalAlpha = clamp((t.max - t.life) / (t.max * .4), 0, 1);
+    c.font = `800 ${t.size}px system-ui,sans-serif`;
+    c.lineWidth = 4; c.strokeStyle = 'rgba(40,20,5,.85)'; c.strokeText(t.text, t.x, t.y);
+    c.fillStyle = t.color; c.fillText(t.text, t.x, t.y);
+  }
+  c.globalAlpha = 1;
+}
+// Når hun mister et liv: rød kant og hjerterne vises kort over kassen, hvor hun kigger
+function drawHurt(c) {
+  if (g.hurt <= 0) return;
+  const vg = c.createRadialGradient(W / 2, H / 2, Math.min(W, H) * .28, W / 2, H / 2, Math.max(W, H) * .62);
+  vg.addColorStop(0, 'rgba(210,30,30,0)'); vg.addColorStop(1, `rgba(210,30,30,${(.6 * g.hurt).toFixed(3)})`);
+  c.fillStyle = vg; c.fillRect(0, 0, W, H);
+  c.globalAlpha = Math.min(1, g.hurt * 2);
+  for (let i = 0; i < CONFIG.lives; i++) {
+    heart(c, player.x + ((CONFIG.lives - 1) / 2 - i) * 17, CATCH_Y - 62, .75, i < g.hearts ? '#e8475a' : 'rgba(255,255,255,.45)');
+  }
+  c.globalAlpha = 1;
+}
+function drawHUD(c) {
+  c.fillStyle = 'rgba(26,14,6,.86)'; c.fillRect(0, 0, W, 62);
+  c.fillStyle = '#c8352f'; c.fillRect(0, 62, W, 2.5);
+  c.textBaseline = 'alphabetic'; c.textAlign = 'left';
+  c.fillStyle = '#d9c3a3'; c.font = '700 10px system-ui,sans-serif'; c.fillText('POINT', 12, 15);
+  c.fillStyle = '#fff'; c.font = '800 20px system-ui,sans-serif'; c.fillText(String(g.score), 12, 36);
+  c.textAlign = 'center'; c.fillStyle = '#d9c3a3'; c.font = '700 10px system-ui,sans-serif'; c.fillText('FORSØG', W / 2, 15);
+  c.fillStyle = '#fff'; c.font = '800 20px system-ui,sans-serif'; c.fillText(String(g.attempt), W / 2, 36);
+  for (let i = 0; i < CONFIG.lives; i++) {
+    const x = W - 20 - i * 24;
+    heart(c, x, 25, 1.15, i < g.hearts ? '#e8475a' : 'rgba(255,255,255,.18)');
+    if (i === g.hearts && clock - g.lostAt < .6) { // hjertet, der lige blev mistet, puster sig op og forsvinder
+      const k = (clock - g.lostAt) / .6;
+      c.globalAlpha = 1 - k; heart(c, x, 25 - k * 8, 1.15 + k * 1.3, '#ff6a7a'); c.globalAlpha = 1;
+    }
+  }
+  const f = Math.min(1, g.score / CONFIG.target);
+  const bx = 12, by = 44, bw = W - 58, bh = 12;
+  c.fillStyle = 'rgba(255,255,255,.14)'; rr(c, bx, by, bw, bh, 6); c.fill();
+  if (f > 0) {
+    const gr = c.createLinearGradient(bx, 0, bx + bw, 0);
+    gr.addColorStop(0, '#c8352f'); gr.addColorStop(.5, '#e8742c'); gr.addColorStop(1, '#f4c430');
+    c.fillStyle = gr; rr(c, bx, by, Math.max(bh, bw * f), bh, 6); c.fill();
+  }
+  const label = g.fun ? `REKORD ${Math.max(store.best, g.score)}` : `${P.meter.toUpperCase()}  ${Math.min(g.score, CONFIG.target)} / ${CONFIG.target}`;
+  c.font = '800 9px system-ui,sans-serif'; c.lineWidth = 2.5; c.strokeStyle = 'rgba(40,20,5,.75)'; c.lineJoin = 'round';
+  c.strokeText(label, bx + bw / 2, by + 9.5); c.fillStyle = '#fff'; c.fillText(label, bx + bw / 2, by + 9.5);
+  c.drawImage(SPR.prize, W - 42, by - 12, 38, 38);
+}
+
+// =============== SKALERING & START ===============
+let ready = false, landscape = null;
+function resize() {
+  if (innerWidth < 1 || innerHeight < 1) return; // nogle in-app-browsere melder 0×0 et øjeblik
+  const oldSpan = CATCH_Y + 40, oldFall = FALL, wasLandscape = landscape;
+  const s = Math.min(innerWidth / W, innerHeight / 640, 1.35);
+  layout(clamp(Math.floor(innerHeight / s), 640, 900));
+  if (g) for (const it of g.items) { it.y = (it.y + 40) * (CATCH_Y + 40) / oldSpan - 40; it.vy *= FALL / oldFall; }
+  const dpr = Math.min(2.5, window.devicePixelRatio || 1);
+  pr = s * dpr;
+  wrap.style.width = cv.style.width = W * s + 'px';
+  wrap.style.height = cv.style.height = H * s + 'px';
+  wrap.style.fontSize = 16 * s + 'px';
+  cv.width = bg.width = fxc.width = Math.round(W * pr);
+  cv.height = bg.height = fxc.height = Math.round(H * pr);
+  const b = bg.getContext('2d'); b.setTransform(pr, 0, 0, pr, 0, 0); drawWall(b);
+  buildSprites();
+  if (!ov.classList.contains('hide')) drawCanvases();
+  landscape = innerWidth > innerHeight;
+  if (ready && state === 'play' && wasLandscape !== landscape) pauseGame(); // telefonen blev vendt
+  ready = true;
+}
+addEventListener('resize', resize);
+
+let last = performance.now();
+function frame(now) {
+  requestAnimationFrame(frame); // først, så en enkelt fejl aldrig kan fryse spillet
+  const dt = Math.min(.05, Math.max(0, (now - last) / 1000)); last = now;
+  if (!ready) { resize(); if (!ready) return; }
+  try { update(dt); render(); } catch (e) { console.error(e); }
+}
+document.title = `Jagten på ${P.bestemt}`;
+resize();
+showStart();
+requestAnimationFrame(frame);
+</script>
+</body>
+</html>
