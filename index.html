@@ -924,7 +924,7 @@ function showStart() {
     <p class="small">Du har ${CONFIG.lives} liv ❤️ – et søm i kassen eller en ting på gulvet koster ét. Jo tættere du kommer på målet, jo hurtigere går det!<br>${touch ? 'Træk med fingeren – hvor som helst på skærmen.' : 'Styr kassen med musen eller ← →'}</p>`;
   show(`<div class="card">${muteBtn()}
     ${TEST ? '<div class="small" style="color:#b3262c"><b>TESTTILSTAND</b> – lavt mål, intet gemmes</div>' : ''}
-    <div class="kicker">${back ? `Hej igen, ${name}!` : `Hej ${name}!`} 👋</div>
+    <div class="kicker">Hej ${name}! 👋</div>
     <h1>Jagten på ${P.bestemt}</h1>
     <canvas class="prize-cv" data-prize="1"></canvas>
     ${store.won ? `<p><b>Du har vundet ${P.bestemt}! 🎉</b><br>Du kan stadig spille for sjov og jagte din rekord på ${store.best} point.</p>` : rules}
