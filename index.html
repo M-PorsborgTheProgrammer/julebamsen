@@ -743,10 +743,19 @@ function startMester() {
   g.mester = { side: Math.random() < .5 ? 1 : -1, t: 0, thrown: false, y: Math.round(CATCH_Y * .64) };
   beep(98, .3, 'sawtooth', .06, .8); beep(82, .35, 'sawtooth', .05, .8, .14); // grr
 }
-function mesterX(m) {
-  const k = m.t < .45 ? easeOut(m.t / .45) : m.t > 1.65 ? 1 - easeOut(Math.min(1, (m.t - 1.65) / .45)) : 1;
-  const x = lerp(-60, 34, k);
-  return m.side === 1 ? x : W - x;
+const backOut = k => { const s = 1.70158, u = k - 1; return 1 + (s + 1) * u * u * u + s * u * u; }; // svinger lidt for langt og tilbage
+// Mester står uden for kanten og læner sig ind over banen (drejer om hoften), så man kun ser hoved og overkrop.
+function mesterPose(m) {
+  let k;
+  if (m.t < .5) k = backOut(m.t / .5);
+  else if (m.t > 1.65) { const p = clamp((m.t - 1.65) / .45, 0, 1); k = 1 - p * p; }
+  else k = 1;
+  const rage = m.t > .5 && m.t < 1.6 ? Math.sin(m.t * 32) * .035 : 0; // han ryster af raseri
+  return { px: m.side === 1 ? -16 : W + 16, py: m.y + 60, ang: (lerp(-1.25, .62, k) + rage) * m.side };
+}
+function mesterToWorld(m, lx, ly) { // et punkt på mester-tegningen → banens koordinater
+  const p = mesterPose(m), x = m.side * lx, y = ly - 60, c = Math.cos(p.ang), s = Math.sin(p.ang);
+  return [p.px + x * c - y * s, p.py + x * s + y * c];
 }
 function updateMester(dt, q) {
   const m = g.mester;
@@ -756,7 +765,7 @@ function updateMester(dt, q) {
 }
 function throwNails(m, q) {
   const n = g.D.mester > .8 ? 3 : g.D.mester > .6 ? 2 : 1;
-  const sx = mesterX(m) + m.side * 22, sy = m.y - 60, chosen = [];
+  const [sx, sy] = mesterToWorld(m, 22, -62), chosen = []; // fra hans løftede hånd
   for (let i = 0; i < n; i++) {
     const vy = lerp(g.D.v0, g.D.v1, q) * rand(.85, 1.15) * FALL, ty = rand(120, 200) * FALL;
     let tx = null;
@@ -1119,13 +1128,12 @@ function render() {
   const playing = state === 'play' || state === 'pause';
   ctx.save();
   if (g && g.shake > 0 && (state === 'play' || state === 'end')) ctx.translate(rand(-6, 6) * g.shake * 2, rand(-6, 6) * g.shake * 2);
-  if (g && playing && g.mester) drawMesterBody(ctx, g.mester); // bag tingene, så sømmene altid kan ses
+  if (g && playing && g.mester) { drawMesterBody(ctx, g.mester); drawMesterBubble(ctx, g.mester); } // bag tingene, så sømmene altid kan ses
   if (g && playing) for (const it of g.items) if (!it.passed) drawItem(ctx, it); // på vej ned: bag kassen
   drawCrate(ctx, player.x, player.bounce, g ? g.pile : []);
   if (g && playing) for (const it of g.items) if (it.passed) drawItem(ctx, it);  // forbi kassen: foran den
   drawBench(ctx);
   ctx.restore();
-  if (g && playing && g.mester) drawMesterBubble(ctx, g.mester);
   if (g && (playing || (state === 'end' && ov.classList.contains('hide')))) { drawHurt(ctx); drawHUD(ctx); }
 
   // partikler, konfetti og flydende tekst på det øverste lag (også over svendebrevet)
@@ -1209,18 +1217,20 @@ function drawMester(c, pose) {
   c.restore();
 }
 function drawMesterBody(c, m) {
-  c.save(); c.translate(mesterX(m), m.y); c.scale(m.side, 1);
+  const p = mesterPose(m);
+  c.save(); c.translate(p.px, p.py); c.rotate(p.ang); c.translate(0, -60); c.scale(m.side, 1);
   drawMester(c, m.t >= .8 ? 1 : 0);
   c.restore();
 }
 function drawMesterBubble(c, m) {
-  if (m.t < .2 || m.t > 1.75) return;
+  if (m.t < .35 || m.t > 1.75) return;
   const text = 'Dumme lærlinge!';
   c.font = '800 16px system-ui,sans-serif';
-  const bw = c.measureText(text).width + 22, bh = 32, mx = mesterX(m);
-  const bx = m.side === 1 ? clamp(mx + 30, 4, W - bw - 4) : clamp(mx - 30 - bw, 4, W - bw - 4), by = m.y - 122;
-  const tipX = mx + m.side * 16, tipY = m.y - 58, baseX = m.side === 1 ? bx + 22 : bx + bw - 22;
-  c.globalAlpha = clamp(Math.min((m.t - .2) / .12, (1.75 - m.t) / .12), 0, 1);
+  const bw = c.measureText(text).width + 22, bh = 32;
+  const [hx, hy] = mesterToWorld(m, 6, -40), [tipX, tipY] = mesterToWorld(m, 20, -26); // hovedet og munden
+  const bx = clamp(m.side === 1 ? hx + 24 : hx - 24 - bw, 4, W - bw - 4), by = clamp(hy - 90, 70, H - 200);
+  const baseX = clamp(m.side === 1 ? bx + 24 : bx + bw - 24, bx + 12, bx + bw - 12);
+  c.globalAlpha = clamp(Math.min((m.t - .35) / .12, (1.75 - m.t) / .12), 0, 1);
   c.fillStyle = '#fffdf6'; c.strokeStyle = '#3b2412'; c.lineWidth = 2.5;
   rr(c, bx, by, bw, bh, 10); c.fill(); c.stroke();
   c.beginPath(); c.moveTo(baseX - 7, by + bh - 1.5); c.lineTo(tipX, tipY); c.lineTo(baseX + 7, by + bh - 1.5); c.closePath(); c.fill();
