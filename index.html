@@ -734,7 +734,9 @@ function burst(x, y, n, colors, spd, size) {
 }
 function floatText(x, y, text, color, size = 18, dur = 1) { texts.push({ x, y, text, color, size, life: 0, max: dur }); }
 
-const LADDER = [0, 2, 4, 7, 9, 12, 14, 16]; // tonerne stiger, når hun fanger mange i træk
+// Fangst-lyden går en tone op for hver fangst i træk og starter forfra efter toppen,
+// så den bliver i et behageligt toneleje (A-dur pentatonisk, 440–880 Hz) i stedet for at hænge fast på en skinger tone.
+const SCALE = [0, 2, 4, 7, 9, 12];
 function onCatch(it) {
   const T = TYPES[it.type];
   if (T.bad) {
@@ -751,11 +753,11 @@ function onCatch(it) {
   if (g.pile.length > 9) g.pile.shift();
   burst(it.x, CATCH_Y, T.gold ? 22 : 12, T.gold ? ['#ffe27a', '#fff3b0', '#f4c430'] : ['#ffffff', '#e9c58f', '#d9a35f', '#f6e1b8'], T.gold ? 200 : 130, 3);
   floatText(it.x, CATCH_Y - 26, (T.gold ? 'Gylden høvl! +' : '+') + T.pts, T.gold ? '#ffe27a' : '#fff', T.gold ? 20 : 18);
-  if (T.gold) { beep(660, .1, 'triangle', .1); beep(990, .18, 'triangle', .1, 0, .09); }
-  else beep(523 * Math.pow(2, LADDER[Math.min(g.streak, LADDER.length) - 1] / 12), .1, 'triangle', .08, 1.4);
+  if (T.gold) { beep(659, .1, 'triangle', .09); beep(880, .18, 'triangle', .09, 0, .09); }
+  else beep(440 * Math.pow(2, SCALE[(g.streak - 1) % SCALE.length] / 12), .11, 'triangle', .075);
   if (g.streak % 10 === 0) {
     floatText(clamp(player.x, 70, W - 70), CATCH_Y - 64, `${g.streak} i træk!`, '#ffd84d', 21, 1.3);
-    beep(1175, .15, 'sine', .07, 0, .08);
+    beep(659, .14, 'triangle', .06, 0, .06); beep(880, .22, 'triangle', .06, 0, .16);
   }
   if (!g.fun) {
     const left = CONFIG.target - g.score;
